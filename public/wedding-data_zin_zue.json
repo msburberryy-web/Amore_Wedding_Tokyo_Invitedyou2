@@ -1,0 +1,201 @@
+{
+  "groomName": {
+    "en": "Zin",
+    "ja": "ジン",
+    "my": "ဇင်"
+  },
+  "brideName": {
+    "en": "Zue",
+    "ja": "ズー",
+    "my": "ဇူး"
+  },
+  "date": "2026-02-14T17:00:00",
+  "showCountdown": true,
+  "rsvpDeadline": "2026-01-20",
+  "location": {
+    "name": {
+      "en": "Batur Tokyo",
+      "ja": "バトゥール東京",
+      "my": "Batur Tokyo"
+    },
+    "address": {
+      "en": "1F KDX Higashi-Shinjuku Building, 2-4-10 Kabukicho, Shinjuku-ku, Tokyo 160-0021",
+      "ja": "〒160-0021 東京都新宿区歌舞伎町2-4-10 KDX東新宿ビル1F",
+      "my": "1F KDX Higashi-Shinjuku Building, 2-4-10 Kabukicho, Shinjuku-ku, Tokyo 160-0021"
+    },
+    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.161296291768!2d139.70624809999998!3d35.697648199999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188cd8b5b7ac67%3A0x9ce2f5afc23c6d3a!2sWedding%26Party%20BATUR%20Tokyo!5e0!3m2!1sen!2sjp!4v1766542348811!5m2!1sen!2sjp"
+    ,"parkingUrl": "https://www.andativa-batur.com/tokyo/party/enkai/access.html"
+  },
+  "message": {
+    "en": "We invite you to share in our joy as we exchange marriage vows.",
+    "ja": "このたび 私たちは結婚することになりました\n皆様に見守られながら 新しい人生の第一歩を踏み出したいと存じます",
+    "my": "ကျွန်ုပ်တို့၏ မင်္ဂလာပွဲသို့ ကြွရောက်ချီးမြှင့်ပါရန် ဖိတ်ကြားအပ်ပါသည်။"
+  },
+  "googleFormUrl": "",
+  "googleScriptUrl": "https://script.google.com/macros/s/AKfycbw-fcIGfxFajTaEUeKc9KlsghkNhhsN14cdGxtD9Ain_CCR4GdQ6a4YWOhyT3DsQNsCRA/exec",
+  "showSchedule": true,
+  "schedule": [
+    {
+      "time": "18:00",
+      "title": {
+        "en": "Reception",
+        "ja": "受付開始",
+        "my": "ဧည့်ခံခြင်း"
+      },
+      "icon": "reception"
+    },
+    {
+      "time": "18:30",
+      "title": {
+        "en": "Grand Entrance",
+        "ja": "開宴・新郎新婦入場",
+        "my": "မင်္ဂလာဧည့်ခံပွဲ စတင်ခြင်း"
+      },
+      "icon": "party"
+    },
+    {
+      "time": "19:00",
+      "title": {
+        "en": "Meal & Conversation",
+        "ja": "お食事歓談",
+        "my": "ဧည့်ခံကျွေးမွေးခြင်း"
+      },
+      "icon": "meal"
+    },
+    {
+      "time": "19:30",
+      "title": {
+        "en": "Photo Session",
+        "ja": "フォトラウンド",
+        "my": "အမှတ်တရဓာတ်ပုံရိုက်ကူးခြင်း"
+      },
+      "icon": "camera"
+    },
+    {
+      "time": "20:00",
+      "title": {
+        "en": "Games & Entertainment",
+        "ja": "余興・ゲーム",
+        "my": "ဖျော်ဖြေရေး အစီအစဉ်များ"
+      },
+      "icon": "party"
+    },
+    {
+      "time": "20:30",
+      "title": {
+        "en": "Conclusion & Send-off",
+        "ja": "お披楽喜・送賓",
+        "my": "ဧည့်ခံပွဲ ပြီးဆုံးခြင်း"
+      },
+      "icon": "reception"
+    }
+  ],
+  "faq": [
+    {
+      "question": {
+        "en": "Can I bring a +1?",
+        "ja": "同伴者を連れて行ってもいいですか？",
+        "my": "ဧည့်သည်အပို ခေါ်လာလို့ရပါသလား?"
+      },
+      "answer": {
+        "en": "We kindly ask that only those who received this invitation attend. If you are bringing a plus one, please register them in the RSVP form so we can arrange for you to be seated together.",
+        "ja": "お席の都合上、ご招待申し上げた方のみのご出席をお願いしております。お連れ様がいらっしゃる場合は、お席を隣同士でご用意いたしますので、RSVPフォームにてお知らせください。",
+        "my": "နေရာထိုင်ခင်း အခက်အခဲရှိပါသဖြင့် ဖိတ်ကြားထားသူများသာ တက်ရောက်ပေးပါရန် မေတ္တာရပ်ခံပါသည်။ အဖော်ခေါ်လာမည်ဆိုပါက နေရာအတူတကွစီစဉ်နိုင်ရန် RSVP တွင် ဖြည့်စွက်ပေးပါ။"
+      },
+      "icon": "users"
+    },
+    {
+      "question": {
+        "en": "What should I wear?",
+        "ja": "服装の指定はありますか？",
+        "my": "ဘာဝတ်ဆင်ရမလဲ?"
+      },
+      "answer": {
+        "en": "Formal attire is requested.",
+        "ja": "フォーマルな服装でお越しください。",
+        "my": "Formal ဝတ်စုံ ဝတ်ဆင်ပေးပါရန် မေတ္တာရပ်ခံပါသည်။"
+      },
+      "icon": "shirt"
+    },
+    {
+      "question": {
+        "en": "What time should I arrive?",
+        "ja": "何時に到着すればいいですか？",
+        "my": "ဘယ်အချိန်အရောက်လာရမလဲ?"
+      },
+      "answer": {
+        "en": "The ceremony begins at 18:30. Please arrive 20 minutes early.",
+        "ja": "挙式は 18:30 に始まります。20分前にはお越しください。",
+        "my": "မင်္ဂလာပွဲသည် 18:30 တွင် စတင်မည်ဖြစ်ပါသဖြင့် မိနစ် ၂၀ ကြိုတင်ရောက်ရှိပေးပါ။"
+      },
+      "icon": "clock"
+    },
+    {
+      "question": {
+        "en": "Is parking available?",
+        "ja": "駐車場はありますか？",
+        "my": "ကားပါကင်ရှိပါသလား?"
+      },
+        "answer": {
+          "en": "Unfortunately, parking is not available at the venue. Please use nearby public parking. See parking details: https://www.andativa-batur.com/tokyo/party/enkai/access.html",
+          "ja": "申し訳ございませんが、会場に専用駐車場はございません。近隣のコインパーキングをご利用ください。詳しくはこちら: https://www.andativa-batur.com/tokyo/party/enkai/access.html",
+          "my": "ကားပါကင်မရှိပါ။ ကျေးဇူးပြု၍ အနီးနားရှိ အခပေးကားပါကင်ကို အသုံးပြုပါ。 အသေးစိတ်: https://www.andativa-batur.com/tokyo/party/enkai/access.html"
+        },
+      "icon": "map"
+    },
+    {
+      "question": {
+        "en": "I have a dietary restriction.",
+        "ja": "アレルギーがあります。",
+        "my": "မတည့်သည့် အစားအသောက်များ ရှိပါက?"
+      },
+      "answer": {
+        "en": "Please let us know when you RSVP so we can accommodate your needs.",
+        "ja": "RSVPフォームにてお知らせください。対応させていただきます。",
+        "my": "ကျေးဇူးပြု၍ RSVP ပုံစံတွင် ဖြည့်စွက်ဖော်ပြပေးပါ။"
+      },
+      "icon": "utensils"
+    },
+    {
+      "question": {
+        "en": "What is the deadline to RSVP?",
+        "ja": "返信期限はいつですか？",
+        "my": "ဘယ်တော့နောက်ဆုံး အကြောင်းပြန်ရမလဲ?"
+      },
+      "answer": {
+        "en": "Please RSVP by {{deadline}}.",
+        "ja": "{{deadline}}までにご返信をお願いいたします。",
+        "my": "{{deadline}} နောက်ဆုံးထား၍ အကြောင်းပြန်ပေးပါ။"
+      },
+      "icon": "calendar"
+    }
+  ],
+  "showGallery": true,
+  "gallery": [
+    "./photos/[event-folder]/gallery1.jpg",
+    "./photos/[event-folder]/cover.jpg",
+    "./photos/[event-folder]/gallery2.jpg",
+    "./photos/[event-folder]/gallery3.jpg",
+    "./photos/[event-folder]/gallery4.jpg"
+  ],
+  "musicUrl": "",
+  "images": {
+    "hero": "./photos/[event-folder]/cover.jpg",
+    "groom": "./photos/[event-folder]/groom.jpg",
+    "bride": "./photos/[event-folder]/bride.jpg"
+  },
+  "theme": {
+    "primary": "#C5A059",
+    "text": "#4A4A4A",
+    "backgroundTint": "#F5F0E6"
+  },
+  "fonts": {
+    "en": "\"Cormorant Garamond\"",
+    "ja": "\"Shippori Mincho\"",
+    "my": "\"Padauk\""
+  },
+  "visuals": {
+    "enableAnimations": true,
+    "enableEnvelope": true
+  }
+}
