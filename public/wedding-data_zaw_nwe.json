@@ -1,0 +1,172 @@
+{
+  "groomName": {
+    "en": "Zaw",
+    "ja": "ゾゥ",
+    "my": "ဇော်"
+  },
+  "brideName": {
+    "en": "Nwe",
+    "ja": "ヌェ",
+    "my": "နွယ်"
+  },
+  "date": "2026-04-28T10:30:00",
+  "start_time":"10:30",
+  "end_time":"13:00",
+  "showCountdown": true,
+  "rsvpDeadline": "2026-03-20",
+  "location": {
+    "name": {
+      "en": "Satori Vihara",
+      "ja": "悟り寺院",
+      "my": "ဆာတိုးရီဝိဟာရ မြန်မာဘုန်းကြီးကျောင်း"
+    },
+    "address": {
+      "en": "Satori Vihara, 1330-1 Kamikarako, Higashimatsuyama, Saitama 355-0077, Japan. 【Access】 7-minute walk from Tsukinowa Station (South Exit), Tobu Tojo Line.",
+      "ja": "〒355-0077 埼玉県東松山市上唐子1330-1悟り寺院 【アクセス】 東武東上線 月の輪駅 南口から徒歩7分",
+      "my": "ဆာတိုးရီဝိဟာရ မြန်မာဘုန်းကြီးကျောင်း၊ 1330-1 ခါမိခရခို၊ ဟိဂါရှီမတ်စုယာမာ၊ စိုင်းတမ ၃၅၅-၀၀၇၇၊ ဂျပန်။ 【သွားလာရန်】 တိုဘူတိုဂျိုးလိုင်း၊ ဆူကီနိုဝါ ဘူတာ (တောင်ဘက်ထွက်ပေါက်) မှ လမ်းလျှောက် ၇ မိနစ်။ "
+    },
+    "mapUrl": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d25809.846975017903!2d139.342528!3d36.039071!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601ed5a07c3772c9%3A0x9f9dba834e8caf26!2z4YCG4YCs4YCQ4YCt4YCv4YC44YCb4YCu4YCd4YCt4YCf4YCs4YCbIOGAmeGAvOGAlOGAuuGAmeGArOGAmOGAr-GAlOGAuuGAuOGAgOGAvOGAruGAuOGAgOGAu-GAseGArOGAhOGAuuGAuA!5e0!3m2!1sen!2sjp!4v1766648514831!5m2!1sen!2sjp"
+    ,"parkingUrl": ""
+  },
+  "message": {
+    "en": "We invite you to share in our joy as we exchange marriage vows.",
+    "ja": "このたび 私たちは結婚することになりました\n皆様に見守られながら 新しい人生の第一歩を踏み出したいと存じます",
+    "my": "ကျွန်ုပ်တို့၏ ဆွမ်းကျွေးမင်္ဂလာပွဲသို့ ကြွရောက်ချီးမြှင့်ပါရန် ဖိတ်ကြားအပ်ပါသည်။"
+  },
+  "googleFormUrl": "",
+  "googleScriptUrl": "https://script.google.com/macros/s/AKfycbzNNin3_0NjTNY0hJehoE9FVF_VqXEyipo0W1uer8G63uktWvXGVgPUQqO1iw4iro_W/exec",
+  "showSchedule": true,
+  "schedule": [
+    {
+      "time": "10:00",
+      "title": {
+        "en": "Reception",
+        "ja": "受付開始",
+        "my": "ဧည့်ခံခြင်းစတင်ပါမည်"
+      },
+      "icon": "reception"
+    },
+    {
+      "time": "10:30 ~ 11:00",
+      "title": {
+        "en": "Dharma Talk & Wedding Blessing Ceremony Begins",
+        "ja": "ご法話・結婚供養式 開始",
+        "my": "တရားနာခြင်းနှင့် မင်္ဂလာဆွမ်းကပ်ပွဲ စတင်ခြင်း"
+      },
+      "icon": "party"
+    },
+    {
+      "time": "11:00 ~ 12:30",
+      "title": {
+        "en": "Meal & Conversation, Photo Session",
+        "ja": "お食事歓談、フォトラウンド",
+        "my": "ဧည့်ခံကျွေးမွေးခြင်း၊ အမှတ်တရဓာတ်ပုံရိုက်ကူးခြင်း"
+      },
+      "icon": "meal"
+    },
+    {
+      "time": "12:30 ~ 13:00",
+      "title": {
+        "en": "Conclusion & Send-off",
+        "ja": "お披楽喜・送賓",
+        "my": "ဧည့်ခံပွဲ ပြီးဆုံးခြင်း"
+      },
+      "icon": "reception"
+    }
+  ],
+  "faq": [
+    {
+      "question": {
+        "en": "Can I bring a +1?",
+        "ja": "同伴者を連れて行ってもいいですか？",
+        "my": "ဧည့်သည်အပို ခေါ်လာလို့ရပါသလား?"
+      },
+      "answer": {
+        "en": "We kindly ask that only those who received this invitation attend. If you are bringing a plus one, please register them in the RSVP form so we can arrange for you to be seated together.",
+        "ja": "お席の都合上、ご招待申し上げた方のみのご出席をお願いしております。お連れ様がいらっしゃる場合は、お席を隣同士でご用意いたしますので、RSVPフォームにてお知らせください。",
+        "my": "နေရာထိုင်ခင်း အခက်အခဲရှိပါသဖြင့် ဖိတ်ကြားထားသူများသာ တက်ရောက်ပေးပါရန် မေတ္တာရပ်ခံပါသည်။ အဖော်ခေါ်လာမည်ဆိုပါက နေရာအတူတကွစီစဉ်နိုင်ရန် RSVP တွင် ဖြည့်စွက်ပေးပါ။"
+      },
+      "icon": "users"
+    },
+    {
+      "question": {
+        "en": "What should I wear?",
+        "ja": "服装の指定はありますか？",
+        "my": "ဘာဝတ်ဆင်ရမလဲ?"
+      },
+      "answer": {
+        "en": "Burmese attire is requested.",
+        "ja": "フォーマルな服装でお越しください。",
+        "my": "မြန်မာ့ယဥ်ကျေးမှူနှင့်ကိုက်ညီသော ဝတ်စုံ ဝတ်ဆင်ပေးပါရန် မေတ္တာရပ်ခံပါသည်။"
+      },
+      "icon": "shirt"
+    },
+    {
+      "question": {
+        "en": "What time should I arrive?",
+        "ja": "何時に到着すればいいですか？",
+        "my": "ဘယ်အချိန်အရောက်လာရမလဲ?"
+      },
+      "answer": {
+        "en": "The ceremony will be held from {{start_time}} to {{end_time}}. As space is limited, we kindly ask that you confirm your arrival time with the inviter in advance.",
+        "ja": "挙式は {{start_time}} から {{end_time}} まで執り行われます。会場の都合上、恐れ入りますがご到着時間につきましては事前にご招待者までご確認くださいますようお願い申し上げます。",
+        "my": "မင်္ဂလာပွဲကို {{start_time}} မှ {{end_time}} အထိ ကျင်းပမည်ဖြစ်ပါသည်။ နေရာအကန့်အသတ်ရှိပါသောကြောင့် ရောက်ရှိမည့်အချိန်ကို ဖိတ်ခေါ်သူနှင့် ကြိုတင်အတည်ပြုပေးပါရန် မေတ္တာရပ်ခံအပ်ပါသည်။"
+      },
+      "icon": "clock"
+    },
+    {
+      "question": {
+        "en": "Is parking available?",
+        "ja": "駐車場はありますか？",
+        "my": "ကားပါကင်ရှိပါသလား?"
+      },
+        "answer": {
+          "en": "Unfortunately, parking is not available at the venue. Please use nearby public parking. ",
+          "ja": "申し訳ございませんが、会場に専用駐車場はございません。近隣のコインパーキングをご利用ください。",
+          "my": "ကားပါကင်မရှိပါ။ ကျေးဇူးပြု၍ အနီးနားရှိ အခပေးကားပါကင်ကို အသုံးပြုပါ။"
+        },
+      "icon": "map"
+    },
+    {
+      "question": {
+        "en": "What is the deadline to RSVP?",
+        "ja": "返信期限はいつですか？",
+        "my": "ဘယ်တော့နောက်ဆုံး အကြောင်းပြန်ရမလဲ?"
+      },
+      "answer": {
+        "en": "Please RSVP by {{deadline}}.",
+        "ja": "{{deadline}}までにご返信をお願いいたします。",
+        "my": "{{deadline}} နောက်ဆုံးထား၍ အကြောင်းပြန်ပေးပါ။"
+      },
+      "icon": "calendar"
+    }
+  ],
+  "showGallery": true,
+  "gallery": [
+    "./photos/[event-folder]/gallery1.jpg",
+    "./photos/[event-folder]/cover.jpg",
+    "./photos/[event-folder]/gallery2.jpg",
+    "./photos/[event-folder]/gallery3.jpg",
+    "./photos/[event-folder]/gallery4.jpg"
+  ],
+  "musicUrl": "",
+  "images": {
+    "hero": "./photos/[event-folder]/cover.jpg",
+    "groom": "./photos/[event-folder]/groom.jpg",
+    "bride": "./photos/[event-folder]/bride.jpg"
+  },
+  "theme": {
+    "primary": "#C5A059",
+    "text": "#4A4A4A",
+    "backgroundTint": "#F5F0E6"
+  },
+  "fonts": {
+    "en": "\"Cormorant Garamond\"",
+    "ja": "\"Shippori Mincho\"",
+    "my": "\"Padauk\""
+  },
+  "visuals": {
+    "enableAnimations": true,
+    "enableEnvelope": true
+  }
+}

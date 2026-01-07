@@ -41,6 +41,8 @@ export interface WeddingData {
   brideName: LocalizedString;
   date: string; // ISO date string
   showCountdown: boolean; // Toggle for countdown
+  start_time: string; // Start time string like "11:00"
+  end_time: string; // End time string like "13:00"
   rsvpDeadline: string; // ISO date string for RSVP
   location: {
     name: LocalizedString;
@@ -89,6 +91,8 @@ export const DEFAULT_DATA: WeddingData = {
   brideName: { en: 'Bride', ja: 'メイ', my: 'မေ' },
   date: '2025-05-10T10:00:00',
   showCountdown: true,
+  start_time: "00:00",
+  end_time: "00:00",
   rsvpDeadline: '2025-04-05',
   location: {
     name: { en: 'Akasaka Area', ja: '赤坂エリア', my: 'Akasaka Area' },

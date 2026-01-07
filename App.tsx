@@ -379,6 +379,8 @@ const App: React.FC = () => {
     let processed = text;
     if (processed.includes('{{time}}')) processed = processed.replace(/{{time}}/g, dateObj.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: lang !== 'ja' }));
     if (processed.includes('{{deadline}}')) processed = processed.replace(/{{deadline}}/g, new Date(data.rsvpDeadline).toLocaleDateString());
+    if (processed.includes('{{start_time}}')) processed = processed.replace(/{{start_time}}/g, data.start_time || '10:00');
+    if (processed.includes('{{end_time}}')) processed = processed.replace(/{{end_time}}/g, data.end_time || '13:00');
     return processed;
   };
 

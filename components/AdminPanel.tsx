@@ -289,6 +289,16 @@ const AdminPanel: React.FC<Props> = ({ data, onUpdate, onClose }) => {
                         <label className="text-xs font-bold text-gray-700 block mb-1">Wedding Date & Time</label>
                         <input type="datetime-local" className="w-full border p-2 rounded text-sm bg-white" value={localData.date.substring(0, 16)} onChange={e => handleChange('date', null, e.target.value)} />
                     </div>
+                    <div className="grid grid-cols-2 gap-2">
+                        <div>
+                            <label className="text-xs font-bold text-gray-700 block mb-1">Start Time</label>
+                            <input type="time" className="w-full border p-2 rounded text-sm bg-white" value={localData.start_time || ''} onChange={e => handleChange('start_time', null, e.target.value)} />
+                        </div>
+                        <div>
+                            <label className="text-xs font-bold text-gray-700 block mb-1">End Time</label>
+                            <input type="time" className="w-full border p-2 rounded text-sm bg-white" value={localData.end_time || ''} onChange={e => handleChange('end_time', null, e.target.value)} />
+                        </div>
+                    </div>
                     <div>
                         <label className="text-xs font-bold text-gray-700 block mb-1">RSVP Deadline</label>
                         <input type="date" className="w-full border p-2 rounded text-sm bg-white" value={localData.rsvpDeadline || ''} onChange={e => handleChange('rsvpDeadline', null, e.target.value)} />
