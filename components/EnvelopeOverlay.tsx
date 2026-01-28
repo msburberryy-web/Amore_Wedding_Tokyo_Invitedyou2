@@ -199,9 +199,9 @@ const EnvelopeOverlay: React.FC<Props> = ({ data, onOpen }) => {
             {/* Card Content */}
             <div className={`w-full h-full flex flex-col items-center justify-center border border-wedding-gold/30 p-8 transition-opacity duration-500 ${isRevealing ? 'opacity-0' : 'opacity-100'}`}>
                 <p className="text-wedding-gold text-xs tracking-[0.4em] uppercase mb-6">Invitation</p>
-                <h2 className="font-script text-5xl md:text-6xl text-gray-800 mb-4">{data.groomName.en}</h2>
+                <h2 className="font-serif text-4xl uppercase tracking-[0.3em] font-light">{data.groomName.en}</h2>
                 <span className="text-lg text-wedding-gold font-serif italic mb-2">&</span>
-                <h2 className="font-script text-5xl md:text-6xl text-gray-800 mb-8">{data.brideName.en}</h2>
+                <h2 className="font-serif text-4xl uppercase tracking-[0.3em] font-light">{data.brideName.en}</h2>
                 <div className="w-12 h-[1px] bg-wedding-gold mb-4"></div>
                 <p className="text-xs text-gray-500 font-serif uppercase tracking-widest">{new Date(data.date).toLocaleDateString()}</p>
             </div>
