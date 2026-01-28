@@ -483,7 +483,7 @@ const App: React.FC = () => {
                     <p className="text-sm md:text-xl tracking-[0.3em] uppercase mb-12 drop-shadow-md text-white font-serif border-b border-white/60 pb-2">{t.saveTheDate}</p>
                     
                     <div className="relative mb-8 py-4">
-                        <h1 className="font-script text-7xl md:text-9xl mb-4 drop-shadow-2xl text-white flex flex-col md:block items-center">
+                        <h1 className="font-serif text-5xl md:text-7xl mb-4 drop-shadow-2xl text-white flex flex-col md:block items-center uppercase tracking-[0.3em] font-light">
                             <span>{data.groomName.en}</span>
                             <span className="text-4xl align-middle mx-4 text-wedding-gold/90 my-2">&</span>
                             <span>{data.brideName.en}</span>
