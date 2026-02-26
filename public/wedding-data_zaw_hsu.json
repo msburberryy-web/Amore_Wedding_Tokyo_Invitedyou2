@@ -11,17 +11,17 @@
   },
   "date": "2026-05-04T14:30",
   "showCountdown": true,
-  "rsvpDeadline": "2026-04-04",
+  "rsvpDeadline": "2026-04-03",
   "location": {
     "name": {
       "en": "Hotel Metropolitan Ikebukuro",
       "ja": "ホテルメトロポリタン池袋",
-      "my": "MarryGrant Akasaka"
+      "my": "Hotel Metropolitan Ikebukuro"
     },
     "address": {
-      "en": "〒171-8505 Tokyo, Toshima City, Nishiikebukuro, 1 Chome−6−1 ホテルメトロポリタン 2階",
-      "ja": "〒171-8505 東京都豊島区西池袋1丁目6番1号",
-      "my": "〒171-8505 Tokyo, Toshima City, Nishiikebukuro, 1 Chome−6−1 ホテルメトロポリタン 2階"
+      "en": "〒171-8505 Tokyo, Toshima City, Nishiikebukuro, 1 Chome−6−1 Hotel Metropolitan Ikebukuro 2F",
+      "ja": "〒171-8505 東京都豊島区西池袋1丁目6番1号 ホテルメトロポリタン 2階",
+      "my": "〒171-8505 Tokyo, Toshima City, Nishiikebukuro, 1 Chome−6−1 Hotel Metropolitan Ikebukuro 2F"
     },
     "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3238.909718860212!2d139.7079855!3d35.7284388!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188d9c86d83c7f%3A0xe8856e0867d2dc12!2z44Ob44OG44Or44Oh44OI44Ot44Od44Oq44K_44Oz5rGg6KKL!5e0!3m2!1sen!2sjp!4v1771642010823!5m2!1sen!2sjp"
   },
@@ -35,7 +35,7 @@
   "showSchedule": true,
   "schedule": [
     {
-      "time": "14:30",
+      "time": "15:00",
       "title": {
         "en": "Reception",
         "ja": "受付開始",
@@ -44,40 +44,13 @@
       "icon": "reception"
     },
     {
-      "time": "15:00",
+      "time": "15:30",
       "title": {
         "en": "Grand Entrance",
         "ja": "開宴・新郎新婦入場",
         "my": "မင်္ဂလာဧည့်ခံပွဲ စတင်ခြင်း"
       },
       "icon": "party"
-    },
-    {
-      "time": "15:30",
-      "title": {
-        "en": "Meal & Conversation",
-        "ja": "お食事歓談",
-        "my": "ဧည့်ခံကျွေးမွေးခြင်း"
-      },
-      "icon": "meal"
-    },
-    {
-      "time": "17:00",
-      "title": {
-        "en": "Photo Session",
-        "ja": "フォトラウンド",
-        "my": "အမှတ်တရဓာတ်ပုံရိုက်ကူးခြင်း"
-      },
-      "icon": "camera"
-    },
-    {
-      "time": "20:00",
-      "title": {
-        "en": "Conclusion & Send-off",
-        "ja": "お披楽喜・送賓",
-        "my": "ဧည့်ခံပွဲ ပြီးဆုံးခြင်း"
-      },
-      "icon": "reception"
     }
   ],
   "faq": [
