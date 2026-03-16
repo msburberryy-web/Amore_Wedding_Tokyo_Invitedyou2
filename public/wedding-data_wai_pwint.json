@@ -33,6 +33,26 @@
   "googleFormUrl": "",
   "googleScriptUrl": "https://script.google.com/macros/s/AKfycbzDnfNlrfqdmGxim7yI9V-qGeTA4s8NWSRWkkgX9vlXFfoPdjkpqCfL8hqvIGWU7CM/exec",
   "showSchedule": true,
+    "schedule": [
+    {
+      "time": "11:00",
+      "title": {
+        "en": "Reception",
+        "ja": "受付開始",
+        "my": "ဧည့်ခံခြင်း"
+      },
+      "icon": "reception"
+    },
+    {
+      "time": "11:30",
+      "title": {
+        "en": "Grand Entrance",
+        "ja": "開宴・新郎新婦入場",
+        "my": "မင်္ဂလာဧည့်ခံပွဲ စတင်ခြင်း"
+      },
+      "icon": "party"
+    }
+  ],
   "faq": [
     {
       "question": {
@@ -115,19 +135,19 @@
   ],
   "showGallery": true,
   "gallery": [
-    "./photos/[event-folder]/gallery1.jpeg",
-    "./photos/[event-folder]/cover.jpeg",
-    "./photos/[event-folder]/gallery2.jpeg",
-    "./photos/[event-folder]/gallery3.jpeg",
-    "./photos/[event-folder]/gallery4.jpeg",
-    "./photos/[event-folder]/gallery5.jpeg",
-    "./photos/[event-folder]/gallery6.jpeg"
+    "./photos/[event-folder]/gallery1.jpg",
+    "./photos/[event-folder]/cover.jpg",
+    "./photos/[event-folder]/gallery2.jpg",
+    "./photos/[event-folder]/gallery3.jpg",
+    "./photos/[event-folder]/gallery4.jpg",
+    "./photos/[event-folder]/gallery5.jpg",
+    "./photos/[event-folder]/gallery6.jpg"
   ],
   "musicUrl": "",
   "images": {
-    "hero": "./photos/[event-folder]/cover.jpeg",
-    "groom": "./photos/[event-folder]/groom.jpeg",
-    "bride": "./photos/[event-folder]/bride.jpeg"
+    "hero": "./photos/[event-folder]/cover.jpg",
+    "groom": "./photos/[event-folder]/groom.jpg",
+    "bride": "./photos/[event-folder]/bride.jpg"
   },
   "theme": {
     "primary": "#6B8E9B",
