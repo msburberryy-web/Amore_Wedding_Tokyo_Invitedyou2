@@ -9,21 +9,21 @@
     "ja": "プインテイリカイン",
     "my": "PWINT THIRI KHAING"
   },
-  "date": "2026-04-19",
+  "date": "2026-04-19T11:00",
   "showCountdown": true,
   "rsvpDeadline": "2026-04-05",
   "location": {
     "name": {
-      "en": "Shizuoka",
-      "ja": "Shizuoka",
-      "my": "Shizuoka"
+      "en": "静岡新聞放送会館",
+      "ja": "静岡新聞放送会館",
+      "my": "静岡新聞放送会館"
     },
     "address": {
-      "en": "Shizuoka Venue Address",
-      "ja": "Shizuoka Venue Address",
-      "my": "Shizuoka Venue Address"
+      "en": "3-chōme-1-1 Toro, Suruga Ward, Shizuoka, 422-8033 Shizuoka Shinbun Broadcasting Center 17F",
+      "ja": "〒422-8033 静岡県静岡市駿河区登呂３丁目１−1 静岡新聞放送会館 17階",
+      "my": "3-chōme-1-1 Toro, Suruga Ward, Shizuoka, 422-8033 Shizuoka Shinbun Broadcasting Center 17F"
     },
-    "mapUrl": "Shizuoka venue map share url"
+    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d817.465458619966!2d138.40375416970858!3d34.960071498301794!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601a36240973b483%3A0x5185549c8df6f8a6!2s3-ch%C5%8Dme-1-1%20Toro%2C%20Suruga%20Ward%2C%20Shizuoka%2C%20422-8033!5e0!3m2!1sen!2sjp!4v1773676322654!5m2!1sen!2sjp"
   },
   "message": {
     "en": "We invite you to share in our joy as we exchange marriage vows.",
@@ -31,7 +31,7 @@
     "my": "ကျွန်ုပ်တို့၏ မင်္ဂလာပွဲသို့ ကြွရောက်ချီးမြှင့်ပါရန် ဖိတ်ကြားအပ်ပါသည်။"
   },
   "googleFormUrl": "",
-  "googleScriptUrl": "Replace here",
+  "googleScriptUrl": "https://script.google.com/macros/s/AKfycbzDnfNlrfqdmGxim7yI9V-qGeTA4s8NWSRWkkgX9vlXFfoPdjkpqCfL8hqvIGWU7CM/exec",
   "showSchedule": true,
   "faq": [
     {
@@ -119,7 +119,9 @@
     "./photos/[event-folder]/cover.jpeg",
     "./photos/[event-folder]/gallery2.jpeg",
     "./photos/[event-folder]/gallery3.jpeg",
-    "./photos/[event-folder]/gallery4.jpeg"
+    "./photos/[event-folder]/gallery4.jpeg",
+    "./photos/[event-folder]/gallery5.jpeg",
+    "./photos/[event-folder]/gallery6.jpeg"
   ],
   "musicUrl": "",
   "images": {
