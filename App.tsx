@@ -383,12 +383,30 @@ const App: React.FC = () => {
   const processFaqText = (text: string) => {
     let processed = text;
     if (processed.includes('{{time}}')) processed = processed.replace(/{{time}}/g, dateObj.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: lang !== 'ja' }));
-    if (processed.includes('{{deadline}}')) processed = processed.replace(/{{deadline}}/g, new Date(data.rsvpDeadline).toLocaleDateString());
-    if (processed.includes('{{start_time}}')) processed = processed.replace(/{{start_time}}/g, data.start_time || '10:00');
+    if (processed.includes('{{deadline}}')) {
+      const deadlineDate = new Date(data.rsvpDeadline);
+      const formattedDeadline = isNaN(deadlineDate.getTime()) 
+        ? data.rsvpDeadline 
+        : deadlineDate.toLocaleDateString(lang === 'en' ? 'en-US' : lang === 'ja' ? 'ja-JP' : 'en-GB', {
+            year: 'numeric', month: 'long', day: 'numeric'
+          });
+      processed = processed.replace(/{{deadline}}/g, formattedDeadline);
+    }
     if (processed.includes('{{end_time}}')) processed = processed.replace(/{{end_time}}/g, data.end_time || '13:00');
     return processed;
   };
-
+  const processedFaq = data.faq.map(item => ({
+    ...item,
+    question: Object.keys(item.question).reduce((acc, l) => {
+      acc[l as Language] = processFaqText(item.question[l as Language]);
+      return acc;
+    }, {} as Record<Language, string>),
+    answer: Object.keys(item.answer).reduce((acc, l) => {
+      acc[l as Language] = processFaqText(item.answer[l as Language]);
+      return acc;
+    }, {} as Record<Language, string>)
+  }));
+  
   const activeFont = data.fonts?.[lang] || DEFAULT_DATA.fonts[lang];
   const theme = data.theme || DEFAULT_DATA.theme;
   const styleVars = {
@@ -464,7 +482,7 @@ const App: React.FC = () => {
       )}
 
       {view === 'rsvp' ? (
-        <RsvpForm language={lang} googleScriptUrl={data.googleScriptUrl} faq={data.faq} weddingData={data} onBack={() => setView('invitation')} />
+        <RsvpForm language={lang} googleScriptUrl={data.googleScriptUrl} faq={processedFaq} weddingData={data} onBack={() => setView('invitation')} />
       ) : (
         <>
         <header className="relative h-screen min-h-[700px] flex items-center justify-center text-center overflow-hidden">
@@ -613,13 +631,13 @@ const App: React.FC = () => {
                         <div className="w-10 h-[1px] bg-wedding-gold mx-auto mt-6"></div>
                  </div>
                  <div className="grid md:grid-cols-2 gap-x-12 gap-y-12 max-w-3xl mx-auto">
-                   {data.faq.map((item, idx) => (
+                  {processedFaq.map((item, idx) => (
                      <div key={idx} className="border-b border-gray-200 pb-8">
                         <h3 className="text-md font-bold text-gray-800 mb-4 flex items-start gap-3">
                              <span className="text-wedding-gold text-sm font-serif italic">Q.</span>
-                             {processFaqText(item.question[lang])}
+                             {item.question[lang]}
                         </h3>
-                        <p className="text-gray-500 font-light text-sm leading-relaxed pl-7">{processFaqText(item.answer[lang])}</p>
+                        <p className="text-gray-500 font-light text-sm leading-relaxed pl-7">{item.answer[lang]}</p>
                      </div>
                    ))}
                  </div>

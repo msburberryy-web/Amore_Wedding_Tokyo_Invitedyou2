@@ -165,7 +165,7 @@ export const DEFAULT_DATA: WeddingData = {
     {
       question: { en: "What is the deadline to RSVP?", ja: "返信期限はいつですか？", my: "ဘယ်တော့နောက်ဆုံး အကြောင်းပြန်ရမလဲ?" },
       answer: { 
-        en: "Please RSVP by {{deadline}}.", 
+        en: "Please respond by {{deadline}}.", 
         ja: "{{deadline}}までにご返信をお願いいたします。", 
         my: "{{deadline}} နောက်ဆုံးထား၍ အကြောင်းပြန်ပေးပါ။" 
       },
