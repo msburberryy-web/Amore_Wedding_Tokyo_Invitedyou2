@@ -157,7 +157,7 @@
   "fonts": {
     "en": "\"Cormorant Garamond\"",
     "ja": "\"Shippori Mincho\"",
-    "my": "\"Padauk\""
+    "my": "\"Noto Serif Myanmar\""
   },
   "visuals": {
     "enableAnimations": true,

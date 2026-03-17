@@ -136,6 +136,11 @@ const App: React.FC = () => {
     if (ref.current) ref.current.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // Helper function to adjust font size based on name length
+  const getNameFontSize = (name: string) => {
+    return name.length > 15 ? 'text-lg' : name.length > 10 ? 'text-xl' : 'text-2xl';
+  };
+
   // 1. Initialization & Data Loading
   useEffect(() => {
     // SECURITY: Control Admin Access based on Build Environment
@@ -462,44 +467,29 @@ const App: React.FC = () => {
         <RsvpForm language={lang} googleScriptUrl={data.googleScriptUrl} faq={data.faq} weddingData={data} onBack={() => setView('invitation')} />
       ) : (
         <>
-          <header className="relative h-screen min-h-[700px] flex items-center justify-center text-center overflow-hidden">
-            <div 
-              className="absolute inset-0 z-0 bg-cover bg-center transition-transform duration-[20s] hover:scale-105"
-              style={{ backgroundImage: `url(${data.images?.hero || DEFAULT_DATA.images.hero})` }}
-            />
-            {/* Piary Style: Darker overlay to make white text pop more elegantly */}
+        <header className="relative h-screen min-h-[700px] flex items-center justify-center text-center overflow-hidden">
+            <div className="absolute inset-0 z-0 bg-cover bg-center" style={{ backgroundImage: `url(${data.images?.hero || DEFAULT_DATA.images.hero})` }} />
             <div className="absolute inset-0 bg-black/10 z-0" />
             
-            <div className={`relative z-10 text-white p-6 w-full max-w-5xl mx-auto h-full flex flex-col justify-center items-center transition-opacity duration-1000 ${contentAnimationClass}`}>
-               
-                {/* Vertical Japanese Text (Piary Style) - Visible on Mobile now */}
-                <div className="absolute top-12 right-6 md:top-24 md:right-12 h-3/4 writing-vertical text-2xl md:text-4xl font-serif text-white drop-shadow-lg tracking-[0.5em] opacity-90 flex flex-col justify-center pointer-events-none z-0">
-                     <span className="mb-8">{data.groomName.ja}</span>
-                     <span className="mb-8 text-[0.5em]">●</span>
-                     <span>{data.brideName.ja}</span>
-                </div>
-
-                <div className="flex flex-col items-center relative z-10">
-                    <p className="text-sm md:text-xl tracking-[0.3em] uppercase mb-12 drop-shadow-md text-white font-serif border-b border-white/60 pb-2">{t.saveTheDate}</p>
+            <div className={`relative z-10 text-white p-6 w-full max-w-6xl mx-auto h-full flex flex-col justify-center items-center transition-opacity duration-1000 ${contentAnimationClass}`}>
+                <div className="flex flex-col items-center relative z-10 w-full px-4">
+                    <p className="text-sm md:text-xl tracking-[0.3em] uppercase mb-6 md:mb-12 drop-shadow-md text-white font-serif border-b border-white/60 pb-2">{t.saveTheDate}</p>
                     
-                    <div className="relative mb-8 py-4">
-                        <h1 className="font-serif text-5xl md:text-7xl mb-4 drop-shadow-2xl text-white flex flex-col md:block items-center uppercase tracking-[0.3em] font-light">
-                            <span>{data.groomName.en}</span>
-                            <span className="text-4xl align-middle mx-4 text-wedding-gold/90 my-2">&</span>
-                            <span>{data.brideName.en}</span>
+                    <h1 className="font-serif text-xl sm:text-3xl md:text-5xl lg:text-7xl mb-2 md:mb-4 drop-shadow-2xl text-white flex flex-col md:flex-row flex-wrap justify-center items-center tracking-[0.1em] sm:tracking-[0.2em] md:tracking-[0.3em] font-light max-w-[95%] md:max-w-[85%] leading-tight">
+                            <span className="break-words text-center px-2 italic">{data.groomName[lang]}</span>
+                            <span className="text-xl md:text-3xl align-middle mx-2 md:mx-4 text-wedding-gold/90 my-1 md:my-2 lowercase italic tracking-normal normal-case font-script">&</span>
+                            <span className="break-words text-center px-2 italic">{data.brideName[lang]}</span>
                         </h1>
-                    </div>
 
-                    <div className="inline-block bg-white/10 backdrop-blur-[4px] border border-white/30 py-4 px-10 rounded-sm mt-8">
-                        <p className="text-xl md:text-3xl font-serif tracking-[0.2em] drop-shadow-md text-white">{formattedDate}</p>
+                    <div className="inline-block bg-white/15 backdrop-blur-md border border-white/40 py-2 md:py-4 px-6 md:px-12 rounded-sm mt-4 md:mt-12 shadow-lg">
+                        <p className="text-base md:text-3xl font-serif tracking-[0.2em] drop-shadow-md text-white">{formattedDate}</p>
                     </div>
                 </div>
             </div>
-
-            <div className={`absolute bottom-24 left-1/2 -translate-x-1/2 z-10 animate-bounce transition-opacity duration-1000 ${contentAnimationClass}`}>
-                <div className="text-white/90 flex flex-col items-center gap-2">
-                    <span className="text-[10px] tracking-widest uppercase">Scroll</span>
-                    <ChevronDown size={24} />
+            <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 z-10 animate-bounce transition-opacity duration-1000 ${contentAnimationClass}`}>
+                <div className="text-white/70 flex flex-col items-center gap-0.5">
+                    <span className="text-[8px] tracking-[0.2em] uppercase font-light">Scroll</span>
+                    <ChevronDown size={16} />
                 </div>
             </div>
           </header>
@@ -528,7 +518,7 @@ const App: React.FC = () => {
                              </div>
                         </div>
                         <div className="mt-6">
-                             <h3 className="text-2xl font-serif text-wedding-text">{data.groomName[lang]}</h3>
+                             <h3 className={`${getNameFontSize(data.groomName[lang])} font-serif text-wedding-text`}>{data.groomName[lang]}</h3>
                              <p className="text-xs text-wedding-gold uppercase tracking-widest mt-1">Groom</p>
                         </div>
                     </div>
@@ -543,7 +533,7 @@ const App: React.FC = () => {
                              </div>
                         </div>
                          <div className="mt-6">
-                             <h3 className="text-2xl font-serif text-wedding-text">{data.brideName[lang]}</h3>
+                             <h3 className={`${getNameFontSize(data.brideName[lang])} font-serif text-wedding-text`}>{data.brideName[lang]}</h3>
                              <p className="text-xs text-wedding-gold uppercase tracking-widest mt-1">Bride</p>
                         </div>
                     </div>
