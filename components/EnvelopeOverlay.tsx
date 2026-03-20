@@ -12,7 +12,8 @@ const EnvelopeOverlay: React.FC<Props> = ({ data, onOpen }) => {
   const [stage, setStage] = useState<AnimationStage>('closed');
 
   const playPaperSound = () => {
-      const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2414/2414-preview.mp3'); 
+      const audio = new Audio('https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3'); 
+      //const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2414/2414-preview.mp3'); 
       audio.volume = 0.5;
       audio.play().catch(() => {});
   };
