@@ -136,19 +136,18 @@
   ],
   "showGallery": true,
   "gallery": [
-    "./photos/[event-folder]/gallery1.jpg",
-    "./photos/[event-folder]/cover.jpg",
-    "./photos/[event-folder]/gallery2.jpg",
-    "./photos/[event-folder]/gallery3.jpg",
-    "./photos/[event-folder]/gallery4.jpg",
-    "./photos/[event-folder]/gallery5.jpg",
-    "./photos/[event-folder]/gallery6.jpg"
+    "./photos/[event-folder]/gallery1.JPG",
+    "./photos/[event-folder]/cover.jpeg",
+    "./photos/[event-folder]/gallery2.JPG",
+    "./photos/[event-folder]/gallery3.JPG",
+    "./photos/[event-folder]/gallery4.JPG",
+    "./photos/[event-folder]/gallery5.JPG"
   ],
   "musicUrl": "",
   "images": {
-    "hero": "./photos/[event-folder]/cover.jpg",
-    "groom": "./photos/[event-folder]/groom.jpg",
-    "bride": "./photos/[event-folder]/bride.jpg"
+    "hero": "./photos/[event-folder]/cover.jpeg",
+    "groom": "./photos/[event-folder]/groom.JPG",
+    "bride": "./photos/[event-folder]/bride.JPG"
   },
   "theme": {
     "primary": "#6B8E9B",
