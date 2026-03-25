@@ -136,7 +136,7 @@
   "showGallery": true,
   "gallery": [
     "./photos/[event-folder]/gallery1.jpeg",
-    "./photos/[event-folder]/cover.jpg",
+    "./photos/[event-folder]/gallery1_1.jpeg",
     "./photos/[event-folder]/gallery2.jpeg",
     "./photos/[event-folder]/gallery3.jpeg",
     "./photos/[event-folder]/gallery4.jpg",
