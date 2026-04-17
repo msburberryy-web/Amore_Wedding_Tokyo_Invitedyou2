@@ -150,7 +150,7 @@ async function main() {
       continue;
     }
 
-    const slug = str => str.toLowerCase().trim().replace(/\s+/g, '_');
+    const slug = str => str.toLowerCase().trim().split(/\s+/)[0];
     const groomSlug = slug(tableData.groom_en);
     const brideSlug = slug(tableData.bride_en);
     const folder   = `${groomSlug}_${brideSlug}`;
