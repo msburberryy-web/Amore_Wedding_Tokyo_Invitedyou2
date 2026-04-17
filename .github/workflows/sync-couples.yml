@@ -3,7 +3,7 @@ name: Sync Wedding Couples
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 2 * * *'  # Daily at 2:00 AM UTC
+    - cron: '0 */6 * * *'  # Every 6 hours
 
 permissions:
   contents: write
@@ -20,8 +20,12 @@ jobs:
         with:
           node-version: 20
 
-      - name: Generate couple JSON files and photo folders
-        run: node .github/scripts/generate-couple.js
+      - name: Sync couples from Notion
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DB_ID: 2d5cbda2-0d15-8097-adac-f069f389c174
+          SITE_BASE_URL: ${{ vars.SITE_BASE_URL }}
+        run: node .github/scripts/notion-sync.js
 
       - name: Commit and push if changed
         run: |
@@ -29,6 +33,6 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add public/wedding-data_*.json public/photos/
           git diff --staged --quiet && echo "No changes to commit." || (
-            git commit -m "chore: sync couple wedding data" &&
+            git commit -m "chore: sync couple wedding data from Notion" &&
             git push origin HEAD
           )
