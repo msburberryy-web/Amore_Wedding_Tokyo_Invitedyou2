@@ -1,0 +1,22 @@
+name: Discover Notion DB Structure (One-time setup)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run Notion DB discovery
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DB_ID: 2d5cbda2-0d15-8097-adac-f069f389c174
+        run: node .github/scripts/notion-discover.js
