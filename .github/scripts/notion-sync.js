@@ -150,7 +150,10 @@ async function main() {
       continue;
     }
 
-    const folder   = `${tableData.groom_en.toLowerCase()}_${tableData.bride_en.toLowerCase()}`;
+    const slug = str => str.toLowerCase().trim().replace(/\s+/g, '_');
+    const groomSlug = slug(tableData.groom_en);
+    const brideSlug = slug(tableData.bride_en);
+    const folder   = `${groomSlug}_${brideSlug}`;
     const jsonPath = path.join(publicDir, `wedding-data_${folder}.json`);
     const photoDir = path.join(publicDir, 'photos', folder);
 
@@ -165,7 +168,7 @@ async function main() {
     }
 
     const invitationUrl = SITE_BASE_URL
-      ? `${SITE_BASE_URL}/?event=${tableData.groom_en.toLowerCase()}.${tableData.bride_en.toLowerCase()}`
+      ? `${SITE_BASE_URL}/?event=${groomSlug}.${brideSlug}`
       : '';
 
     await markDone(task.id, invitationUrl);
