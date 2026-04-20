@@ -14,6 +14,13 @@ const AdminPanel = React.lazy(() => import('./components/AdminPanel'));
 // and the build tool (Vite) will remove it entirely from the public site.
 const showAdminPanel = import.meta.env.VITE_ENABLE_ADMIN === 'true' || import.meta.env.DEV;
 
+const PhotoUpload = React.lazy(() => import('./components/PhotoUpload'));
+
+// Detect upload mode before rendering the main app
+const _urlParams = new URLSearchParams(window.location.search);
+const _isUploadMode = _urlParams.get('mode') === 'upload';
+const _uploadEvent  = _urlParams.get('event') || '';
+
 const TRANSLATIONS = {
   en: {
     saveTheDate: "Save The Date",
@@ -110,8 +117,17 @@ const replacePhotoPathsWithEventFolder = (data: WeddingData, eventParam: string 
 };
 
 const App: React.FC = () => {
-  const [data, setData] = useState<WeddingData>(DEFAULT_DATA);
   const [lang, setLang] = useState<Language>('en');
+
+  if (_isUploadMode) {
+    return (
+      <Suspense fallback={<div className="min-h-screen bg-[#F5F0E6]" />}>
+        <PhotoUpload event={_uploadEvent} lang={lang} setLang={setLang} />
+      </Suspense>
+    );
+  }
+
+  const [data, setData] = useState<WeddingData>(DEFAULT_DATA);
   
   // App Modes
   const [isAdminAvailable, setIsAdminAvailable] = useState(false);

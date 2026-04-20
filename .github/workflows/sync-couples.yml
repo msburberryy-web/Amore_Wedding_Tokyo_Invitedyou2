@@ -25,6 +25,7 @@ jobs:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DB_ID: 2d5cbda2-0d15-8097-adac-f069f389c174
           SITE_BASE_URL: ${{ vars.SITE_BASE_URL }}
+          UPLOAD_SECRET: ${{ secrets.UPLOAD_SECRET }}
         run: node .github/scripts/notion-sync.js
 
       - name: Commit and push if changed
