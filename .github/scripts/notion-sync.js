@@ -46,9 +46,9 @@ function notionRequest(path, method = 'GET', body = null) {
 }
 
 // ─── QUERY ────────────────────────────────────────────────────────────────────
-async function queryReadyTasks() {
+async function queryTasksByStatus(status) {
   const result = await notionRequest(`/v1/databases/${DB_ID}/query`, 'POST', {
-    filter: { property: 'Status', select: { equals: 'Ready' } }
+    filter: { property: 'Status', select: { equals: status } }
   });
   return result.results || [];
 }
@@ -139,34 +139,27 @@ async function markDone(pageId, invitationUrl, uploadUrl, uploadCode) {
 }
 
 // ─── MAIN ─────────────────────────────────────────────────────────────────────
-async function main() {
-  const repoRoot    = path.resolve(__dirname, '../../');
-  const publicDir   = path.join(repoRoot, 'public');
-  const defaultData = JSON.parse(fs.readFileSync(path.join(publicDir, 'wedding-data.json'), 'utf8'));
+async function processTask(task, publicDir, defaultData, fullProcess) {
+  const titleProp = Object.values(task.properties).find(p => p.type === 'title');
+  const title = titleProp?.title?.map(t => t.plain_text).join('') || '(untitled)';
+  console.log(`\n${fullProcess ? 'Processing' : 'Refreshing note'}: "${title}" (${task.id})`);
 
-  console.log('Querying Notion for Ready tasks...');
-  const tasks = await queryReadyTasks();
-  console.log(`Found ${tasks.length} Ready task(s).`);
+  const tableData = await getTableData(task.id);
+  if (!tableData || !tableData.groom_en || !tableData.bride_en) {
+    console.log('  Skipping: table missing or groom_en/bride_en fields not found.');
+    return false;
+  }
 
-  let processed = 0;
+  const slug = str => str.toLowerCase().trim().split(/\s+/)[0];
+  const groomSlug = slug(tableData.groom_en);
+  const brideSlug = slug(tableData.bride_en);
+  const folder    = `${groomSlug}_${brideSlug}`;
 
-  for (const task of tasks) {
-    if (!isWebInvitationTask(task)) continue;
+  const invitationUrl = SITE_BASE_URL ? `${SITE_BASE_URL}/?event=${groomSlug}.${brideSlug}` : '';
+  const uploadUrl     = SITE_BASE_URL ? `${SITE_BASE_URL}/?mode=upload&event=${groomSlug}.${brideSlug}` : '';
+  const uploadCode    = UPLOAD_SECRET ? generateUploadCode(folder) : '';
 
-    const titleProp = Object.values(task.properties).find(p => p.type === 'title');
-    const title = titleProp?.title?.map(t => t.plain_text).join('') || '(untitled)';
-    console.log(`\nProcessing: "${title}" (${task.id})`);
-
-    const tableData = await getTableData(task.id);
-    if (!tableData || !tableData.groom_en || !tableData.bride_en) {
-      console.log('  Skipping: table missing or groom_en/bride_en fields not found.');
-      continue;
-    }
-
-    const slug = str => str.toLowerCase().trim().split(/\s+/)[0];
-    const groomSlug = slug(tableData.groom_en);
-    const brideSlug = slug(tableData.bride_en);
-    const folder   = `${groomSlug}_${brideSlug}`;
+  if (fullProcess) {
     const jsonPath = path.join(publicDir, `wedding-data_${folder}.json`);
     const photoDir = path.join(publicDir, 'photos', folder);
 
@@ -179,18 +172,39 @@ async function main() {
       fs.writeFileSync(path.join(photoDir, '.gitkeep'), '');
       console.log(`  Created: public/photos/${folder}/`);
     }
-
-    const invitationUrl = SITE_BASE_URL ? `${SITE_BASE_URL}/?event=${groomSlug}.${brideSlug}` : '';
-    const uploadUrl     = SITE_BASE_URL ? `${SITE_BASE_URL}/?mode=upload&event=${groomSlug}.${brideSlug}` : '';
-    const uploadCode    = UPLOAD_SECRET ? generateUploadCode(folder) : '';
-
-    await markDone(task.id, invitationUrl, uploadUrl, uploadCode);
-    console.log(`  Notion: Status → Done | Upload Code: ${uploadCode || '(no secret set)'}`);
-
-    processed++;
   }
 
-  console.log(`\nDone — ${processed} couple(s) processed.`);
+  await markDone(task.id, invitationUrl, uploadUrl, uploadCode);
+  console.log(`  Notion: note updated | Upload Code: ${uploadCode || '(no secret set)'}`);
+  return true;
+}
+
+async function main() {
+  const repoRoot    = path.resolve(__dirname, '../../');
+  const publicDir   = path.join(repoRoot, 'public');
+  const defaultData = JSON.parse(fs.readFileSync(path.join(publicDir, 'wedding-data.json'), 'utf8'));
+
+  console.log('Querying Notion for Ready and Done tasks...');
+  const [readyTasks, doneTasks] = await Promise.all([
+    queryTasksByStatus('Ready'),
+    queryTasksByStatus('Done')
+  ]);
+  console.log(`Found ${readyTasks.length} Ready, ${doneTasks.length} Done task(s).`);
+
+  let processed = 0;
+
+  for (const task of readyTasks) {
+    if (!isWebInvitationTask(task)) continue;
+    if (await processTask(task, publicDir, defaultData, true)) processed++;
+  }
+
+  // Refresh notes on Done tasks so upload code stays in sync with UPLOAD_SECRET
+  for (const task of doneTasks) {
+    if (!isWebInvitationTask(task)) continue;
+    await processTask(task, publicDir, defaultData, false);
+  }
+
+  console.log(`\nDone — ${processed} new couple(s) processed.`);
 }
 
 main().catch(err => {
