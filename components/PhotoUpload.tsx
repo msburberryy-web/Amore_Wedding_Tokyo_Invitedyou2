@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Language } from '../types';
 import LanguageSwitch from './LanguageSwitch';
 
-const API_BASE = import.meta.env.VITE_UPLOAD_API_URL || '';
+const API_BASE = (import.meta.env.VITE_UPLOAD_API_URL || '').replace(/\/$/, '');
 
 const T = {
   en: {
