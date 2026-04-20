@@ -1,14 +1,20 @@
 import https from 'https';
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
 
-const TOKEN        = process.env.NOTION_TOKEN;
-const DB_ID        = process.env.NOTION_DB_ID;
+const TOKEN         = process.env.NOTION_TOKEN;
+const DB_ID         = process.env.NOTION_DB_ID;
 const SITE_BASE_URL = (process.env.SITE_BASE_URL || '').replace(/\/$/, '');
+const UPLOAD_SECRET = process.env.UPLOAD_SECRET || '';
+
+function generateUploadCode(folder) {
+  return crypto.createHmac('sha256', UPLOAD_SECRET).update(folder).digest('hex').slice(0, 8);
+}
 
 if (!TOKEN || !DB_ID) {
   console.error('Missing required env vars: NOTION_TOKEN, NOTION_DB_ID');
@@ -113,15 +119,22 @@ function buildWeddingData(t, defaultData) {
 }
 
 // ─── UPDATE NOTION ────────────────────────────────────────────────────────────
-async function markDone(pageId, invitationUrl) {
+async function markDone(pageId, invitationUrl, uploadUrl, uploadCode) {
   const properties = {
     Status: { select: { name: 'Done' } }
   };
-  if (invitationUrl) {
+
+  const noteLines = [];
+  if (invitationUrl) noteLines.push(`🔗 Invitation: ${invitationUrl}`);
+  if (uploadUrl)     noteLines.push(`📸 Upload: ${uploadUrl}`);
+  if (uploadCode)    noteLines.push(`🔑 Upload Code: ${uploadCode}`);
+
+  if (noteLines.length) {
     properties.Note = {
-      rich_text: [{ type: 'text', text: { content: invitationUrl } }]
+      rich_text: [{ type: 'text', text: { content: noteLines.join('\n') } }]
     };
   }
+
   await notionRequest(`/v1/pages/${pageId}`, 'PATCH', { properties });
 }
 
@@ -167,12 +180,12 @@ async function main() {
       console.log(`  Created: public/photos/${folder}/`);
     }
 
-    const invitationUrl = SITE_BASE_URL
-      ? `${SITE_BASE_URL}/?event=${groomSlug}.${brideSlug}`
-      : '';
+    const invitationUrl = SITE_BASE_URL ? `${SITE_BASE_URL}/?event=${groomSlug}.${brideSlug}` : '';
+    const uploadUrl     = SITE_BASE_URL ? `${SITE_BASE_URL}/?mode=upload&event=${groomSlug}.${brideSlug}` : '';
+    const uploadCode    = UPLOAD_SECRET ? generateUploadCode(folder) : '';
 
-    await markDone(task.id, invitationUrl);
-    console.log(`  Notion: Status → Done${invitationUrl ? ` | Note → ${invitationUrl}` : ''}`);
+    await markDone(task.id, invitationUrl, uploadUrl, uploadCode);
+    console.log(`  Notion: Status → Done | Upload Code: ${uploadCode || '(no secret set)'}`);
 
     processed++;
   }
