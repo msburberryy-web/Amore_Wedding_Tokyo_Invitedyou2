@@ -9,6 +9,10 @@ on:
     types: [completed]
     branches: [main]
 
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
 permissions:
   contents: read
   pages: write
