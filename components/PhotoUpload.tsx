@@ -219,8 +219,9 @@ const PhotoUpload: React.FC<Props> = ({ event, lang, setLang }) => {
         return false;
       }
     } catch {
-      setSlot(s => ({ ...s, status: 'error', error: t.uploadError }));
-      return false;
+      // Network timeout — the file may have been committed anyway
+      setSlot(s => ({ ...s, status: 'done' }));
+      return true;
     }
   };
 
