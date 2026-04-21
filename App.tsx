@@ -547,8 +547,8 @@ const App: React.FC = () => {
                     {/* Groom */}
                     <div className="relative group text-center w-full max-w-xs">
                         <div className="aspect-[3/4] overflow-hidden relative shadow-md bg-white p-2">
-                             <div className="w-full h-full overflow-hidden relative">
-                                <img src={data.images.groom} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-95 group-hover:opacity-100" />
+                             <div className="w-full h-full overflow-hidden relative bg-gray-100">
+                                <img src={data.images.groom} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-95 group-hover:opacity-100" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
                              </div>
                         </div>
                         <div className="mt-6">
@@ -562,8 +562,8 @@ const App: React.FC = () => {
                     {/* Bride */}
                     <div className="relative group text-center w-full max-w-xs">
                         <div className="aspect-[3/4] overflow-hidden relative shadow-md bg-white p-2">
-                             <div className="w-full h-full overflow-hidden relative">
-                                <img src={data.images.bride} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-95 group-hover:opacity-100" />
+                             <div className="w-full h-full overflow-hidden relative bg-gray-100">
+                                <img src={data.images.bride} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 opacity-95 group-hover:opacity-100" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
                              </div>
                         </div>
                          <div className="mt-6">
@@ -633,7 +633,7 @@ const App: React.FC = () => {
                     <div className="columns-2 md:columns-3 gap-3 space-y-3">
                         {data.gallery.map((img, idx) => (
                             <div key={idx} className="break-inside-avoid overflow-hidden rounded-sm shadow-sm">
-                                <img src={img} alt="Gallery" className="w-full h-auto object-cover hover:opacity-90 transition-opacity duration-300" loading="lazy" />
+                                <img src={img} alt="Gallery" className="w-full h-auto object-cover hover:opacity-90 transition-opacity duration-300" loading="lazy" onError={(e) => { const c = (e.currentTarget as HTMLElement).closest('.break-inside-avoid') as HTMLElement; if (c) c.style.display = 'none'; }} />
                             </div>
                         ))}
                     </div>
