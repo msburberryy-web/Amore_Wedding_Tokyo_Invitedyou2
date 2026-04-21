@@ -187,76 +187,73 @@ const PhotoUpload: React.FC<Props> = ({ event, lang, setLang }) => {
       e.target.value = '';
     };
 
-  // ── Upload single file ────────────────────────────────────────────────────────
-  const uploadFile = async (
-    slot: FileSlot,
-    fileName: string,
-    setSlot: (updater: (prev: FileSlot) => FileSlot) => void
-  ): Promise<boolean> => {
-    if (!slot.file) return true;
-
-    setSlot(s => ({ ...s, status: 'compressing' }));
-    let content: string;
-    try {
-      content = await compressImage(slot.file);
-    } catch {
-      setSlot(s => ({ ...s, status: 'error', error: t.uploadError }));
-      return false;
-    }
-
-    setSlot(s => ({ ...s, status: 'uploading' }));
-    try {
-      const res = await fetch(`${API_BASE}/api/upload`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ event, passphrase: passphrase.trim(), fileName, content })
-      });
-      if (res.ok) {
-        setSlot(s => ({ ...s, status: 'done' }));
-        return true;
-      } else {
-        setSlot(s => ({ ...s, status: 'error', error: t.uploadError }));
-        return false;
-      }
-    } catch {
-      // Network timeout — the file may have been committed anyway
-      setSlot(s => ({ ...s, status: 'done' }));
-      return true;
-    }
-  };
-
-  // ── Upload all ────────────────────────────────────────────────────────────────
+  // ── Upload all (single commit) ────────────────────────────────────────────────
   const handleUpload = async () => {
     setIsUploading(true);
     setGlobalError('');
-    let success = true;
 
-    if (cover.file)
-      success = await uploadFile(cover, 'cover.jpg', s => setCover(s(cover))) && success;
-    if (groom.file)
-      success = await uploadFile(groom, 'groom.jpg', s => setGroom(s(groom))) && success;
-    if (bride.file)
-      success = await uploadFile(bride, 'bride.jpg', s => setBride(s(bride))) && success;
+    // Collect all slots that have files
+    type Entry = { file: File; fileName: string; mark: (s: Status, err?: string) => void };
+    const entries: Entry[] = [];
+    if (cover.file) entries.push({ file: cover.file, fileName: 'cover.jpg', mark: (s, e) => setCover(p => ({ ...p, status: s, error: e })) });
+    if (groom.file) entries.push({ file: groom.file, fileName: 'groom.jpg', mark: (s, e) => setGroom(p => ({ ...p, status: s, error: e })) });
+    if (bride.file) entries.push({ file: bride.file, fileName: 'bride.jpg', mark: (s, e) => setBride(p => ({ ...p, status: s, error: e })) });
+    gallery.forEach((g, i) => {
+      if (g.file) entries.push({
+        file: g.file,
+        fileName: `gallery${i + 1}.jpg`,
+        mark: (s, e) => setGallery(prev => prev.map((item, idx) => idx === i ? { ...item, status: s, error: e } : item))
+      });
+    });
 
-    for (let i = 0; i < gallery.length; i++) {
-      if (gallery[i].file) {
-        const idx = i;
-        const ok = await uploadFile(
-          gallery[idx],
-          `gallery${idx + 1}.jpg`,
-          updater => setGallery(prev => {
-            const next = [...prev];
-            next[idx] = updater(next[idx]);
-            return next;
-          })
-        );
-        if (!ok) success = false;
+    if (entries.length === 0) { setIsUploading(false); return; }
+
+    // Phase 1: compress + upload each file as a blob (no commit yet)
+    const blobs: Array<{ path: string; sha: string }> = [];
+    for (const { file, fileName, mark } of entries) {
+      mark('compressing');
+      let content: string;
+      try {
+        content = await compressImage(file);
+      } catch {
+        mark('error', t.uploadError);
+        setGlobalError(t.uploadError);
+        setIsUploading(false);
+        return;
+      }
+
+      mark('uploading');
+      try {
+        const res = await fetch(`${API_BASE}/api/create-blob`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ event, passphrase: passphrase.trim(), fileName, content })
+        });
+        if (!res.ok) throw new Error('blob failed');
+        const data = await res.json();
+        blobs.push({ path: data.path, sha: data.blobSha });
+      } catch {
+        mark('error', t.uploadError);
+        setGlobalError(t.uploadError);
+        setIsUploading(false);
+        return;
       }
     }
 
+    // Phase 2: one commit for all blobs → one deploy
+    try {
+      await fetch(`${API_BASE}/api/commit-photos`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ event, passphrase: passphrase.trim(), blobs })
+      });
+    } catch {
+      // Network timeout on commit — blobs are safe, commit likely succeeded
+    }
+
+    entries.forEach(({ mark }) => mark('done'));
+    setAllDone(true);
     setIsUploading(false);
-    if (success) setAllDone(true);
-    else setGlobalError(t.uploadError);
   };
 
   const hasAnyFile = cover.file || groom.file || bride.file || gallery.some(g => g.file);
