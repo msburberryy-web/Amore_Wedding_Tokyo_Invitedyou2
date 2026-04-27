@@ -97,6 +97,22 @@ function buildWeddingData(t, defaultData) {
   };
   if (t.parking_url) location.parkingUrl = t.parking_url;
 
+  // Build schedule from uketsuke_time + party_time if provided, else use default
+  const schedule = (t.uketsuke_time || t.party_time)
+    ? [
+        t.uketsuke_time && {
+          time: t.uketsuke_time,
+          title: { en: 'Reception', ja: '受付開始', my: 'ဧည့်ခံခြင်း' },
+          icon: 'reception'
+        },
+        t.party_time && {
+          time: t.party_time,
+          title: { en: 'Banquet Begins', ja: '開宴', my: 'မင်္ဂလာဧည့်ခံပွဲ စတင်ခြင်း' },
+          icon: 'party'
+        }
+      ].filter(Boolean)
+    : defaultData.schedule;
+
   return {
     ...defaultData,
     groomName:       { en: t.groom_en || '', ja: t.groom_ja || '', my: t.groom_my || '' },
@@ -108,6 +124,7 @@ function buildWeddingData(t, defaultData) {
     googleFormUrl:   '',
     googleScriptUrl: t.google_script_url || '',
     showSchedule:    true,
+    schedule,
     showGallery:     true,
     gallery,
     images: {
