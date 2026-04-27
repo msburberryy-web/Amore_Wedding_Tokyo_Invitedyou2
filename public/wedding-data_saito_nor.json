@@ -35,7 +35,7 @@
   "showSchedule": true,
   "schedule": [
     {
-      "time": "10:30",
+      "time": "11:30",
       "title": {
         "en": "Reception",
         "ja": "受付開始",
@@ -44,58 +44,13 @@
       "icon": "reception"
     },
     {
-      "time": "11:00",
+      "time": "12:00",
       "title": {
-        "en": "Grand Entrance",
+        "en": "Party Starts",
         "ja": "開宴・新郎新婦入場",
         "my": "မင်္ဂလာဧည့်ခံပွဲ စတင်ခြင်း"
       },
       "icon": "party"
-    },
-    {
-      "time": "11:15",
-      "title": {
-        "en": "Toast",
-        "ja": "乾杯",
-        "my": "မင်္ဂလာစကားပြောကြားခြင်း"
-      },
-      "icon": "toast"
-    },
-    {
-      "time": "11:30",
-      "title": {
-        "en": "Meal & Conversation",
-        "ja": "お食事歓談",
-        "my": "ဧည့်ခံကျွေးမွေးခြင်း"
-      },
-      "icon": "meal"
-    },
-    {
-      "time": "12:00",
-      "title": {
-        "en": "Photo Session",
-        "ja": "フォトラウンド",
-        "my": "အမှတ်တရဓာတ်ပုံရိုက်ကူးခြင်း"
-      },
-      "icon": "camera"
-    },
-    {
-      "time": "12:15",
-      "title": {
-        "en": "Games & Entertainment",
-        "ja": "余興・ゲーム",
-        "my": "ဖျော်ဖြေရေး အစီအစဉ်များ"
-      },
-      "icon": "party"
-    },
-    {
-      "time": "13:00",
-      "title": {
-        "en": "Conclusion & Send-off",
-        "ja": "お披楽喜・送賓",
-        "my": "ဧည့်ခံပွဲ ပြီးဆုံးခြင်း"
-      },
-      "icon": "reception"
     }
   ],
   "faq": [
