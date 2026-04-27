@@ -2,12 +2,12 @@
   "groomName": {
     "en": "Saito Kosuke",
     "ja": "齋藤 弘将",
-    "my": ""
+    "my": "Saito Kosuke"
   },
   "brideName": {
     "en": "Nor Theingi Aung",
     "ja": "ノーテインギアウン",
-    "my": ""
+    "my": "Nor Theingi Aung"
   },
   "date": "14 June 2026",
   "showCountdown": true,
@@ -15,15 +15,15 @@
   "location": {
     "name": {
       "en": "East Gallery Tomi Garden 6F",
-      "ja": "",
-      "my": ""
+      "ja": "East Gallery Tomi Garden 6F",
+      "my": "East Gallery Tomi Garden 6F"
     },
     "address": {
-      "en": "〒150-0011 東京都渋谷区東3-24-7 Tomi Garden 6F",
-      "ja": "",
-      "my": ""
+      "en": "Tomi Garden 6F, 3-24-7 Higashi, Shibuya-ku, Tokyo 150-0011",
+      "ja": "〒150-0011 東京都渋谷区東3-24-7 Tomi Garden 6F",
+      "my": "Tomi Garden 6F, 3-24-7 Higashi, Shibuya-ku, Tokyo 150-0011"
     },
-    "mapUrl": ""
+    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.1376950616395!2d139.70945609999998!3d35.648979!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188b4184d7f719%3A0x2703ca1e262633c7!2sEbisu East Gallery!5e0!3m2!1sen!2sjp!4v1777261562736!5m2!1sen!2sjp"
   },
   "message": {
     "en": "We invite you to share in our joy as we exchange marriage vows.",
@@ -31,7 +31,7 @@
     "my": "ကျွန်ုပ်တို့၏ မင်္ဂလာပွဲသို့ ကြွရောက်ချီးမြှင့်ပါရန် ဖိတ်ကြားအပ်ပါသည်။"
   },
   "googleFormUrl": "",
-  "googleScriptUrl": "https://script.google.com/macros/s/AKfycbzVtChVXji0JoLCSYfF9G-_DFUxbiSbkG2yrKUod-13VdzYFyXeVXJhIIdRhIgTqIwi/exec",
+  "googleScriptUrl": "",
   "showSchedule": true,
   "schedule": [
     {
