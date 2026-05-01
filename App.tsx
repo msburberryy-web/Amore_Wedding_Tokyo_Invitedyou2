@@ -398,7 +398,11 @@ const App: React.FC = () => {
 
   const processFaqText = (text: string) => {
     let processed = text;
-    if (processed.includes('{{time}}')) processed = processed.replace(/{{time}}/g, dateObj.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: lang !== 'ja' }));
+    if (processed.includes('{{time}}')) {
+      const partyItem = data.schedule?.find((s: any) => s.icon === 'party') || data.schedule?.[0];
+      const clockTime = partyItem?.time || dateObj.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: lang !== 'ja' });
+      processed = processed.replace(/{{time}}/g, clockTime);
+    }
     if (processed.includes('{{deadline}}')) {
       const deadlineDate = new Date(data.rsvpDeadline);
       const formattedDeadline = isNaN(deadlineDate.getTime()) 
