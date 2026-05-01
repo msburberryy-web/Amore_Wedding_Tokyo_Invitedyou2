@@ -399,8 +399,14 @@ const App: React.FC = () => {
   const processFaqText = (text: string) => {
     let processed = text;
     if (processed.includes('{{time}}')) {
-      const partyItem = data.schedule?.find((s: any) => s.icon === 'party') || data.schedule?.[0];
-      const clockTime = partyItem?.time || dateObj.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: lang !== 'ja' });
+      const dateHasTime = /T\d{2}:\d{2}/.test(data.date || '');
+      let clockTime: string;
+      if (dateHasTime) {
+        clockTime = dateObj.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: lang !== 'ja' });
+      } else {
+        const partyItem = data.schedule?.find((s: any) => s.icon === 'party') || data.schedule?.[0];
+        clockTime = partyItem?.time || '';
+      }
       processed = processed.replace(/{{time}}/g, clockTime);
     }
     if (processed.includes('{{deadline}}')) {
