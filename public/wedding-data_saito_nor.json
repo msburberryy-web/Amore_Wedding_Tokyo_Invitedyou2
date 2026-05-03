@@ -7,7 +7,7 @@
   "brideName": {
     "en": "Nor Theingi Aung",
     "ja": "ノーテインギアウン",
-    "my": "နော်သင်္ဂီအောင်"
+    "my": "နော်သိင်္ဂီ အောင်"
   },
   "date": "14 June 2026",
   "showCountdown": true,
@@ -74,9 +74,9 @@
         "my": "ဘာဝတ်ဆင်ရမလဲ?"
       },
       "answer": {
-        "en": "There is no specific dress code, and we warmly invite you to join us in smart casual attire. ",
-        "ja": "特にドレスコードはございませんが、どうぞ平服にてお越しください。",
-        "my": "အထူးသတ်မှတ်ထားသော ဝတ်စားဆင်ယင်မှုစည်းကမ်းမရှိပါ။ လွတ်လပ်ပေါ့ပါး၍ သပ်ရပ်လှပသော ဝတ်စားဆင်ယင်မှုဖြင့် ကြွရောက်ပေးပါရန် ဖိတ်ခေါ်အပ်ပါသည်။"
+        "en": "Formal attire is requested.",
+        "ja": "フォーマルな服装でお越しください。",
+        "my": "Formal ဝတ်စုံ ဝတ်ဆင်ပေးပါရန် မေတ္တာရပ်ခံပါသည်။"
       },
       "icon": "shirt"
     },
