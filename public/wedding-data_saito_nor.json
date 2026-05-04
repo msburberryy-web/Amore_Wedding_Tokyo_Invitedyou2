@@ -73,10 +73,10 @@
         "ja": "服装の指定はありますか？",
         "my": "ဘာဝတ်ဆင်ရမလဲ?"
       },
-      "answer": {
-        "en": "Formal attire is requested.",
-        "ja": "フォーマルな服装でお越しください。",
-        "my": "Formal ဝတ်စုံ ဝတ်ဆင်ပေးပါရန် မေတ္တာရပ်ခံပါသည်။"
+      "answer": { 
+        "en": "There is no specific dress code, and we warmly invite you to join us in smart casual attire.",
+        "ja": "特にドレスコードはございませんが、どうぞ平服にてお越しください。",
+        "my": ""
       },
       "icon": "shirt"
     },
