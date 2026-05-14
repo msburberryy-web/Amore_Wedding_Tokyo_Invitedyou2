@@ -1,0 +1,162 @@
+{
+  "groomName": {
+    "en": "Aung Myo Tun",
+    "ja": "アウンミョトゥン",
+    "my": "Aung Myo Tun"
+  },
+  "brideName": {
+    "en": "Ei Mon Aung",
+    "ja": "エイモンアウン",
+    "my": "Ei Mon Aung"
+  },
+  "date": "2026/06/28",
+  "showCountdown": true,
+  "rsvpDeadline": "2026/05/24",
+  "location": {
+    "name": {
+      "en": "BATUR TOKYO",
+      "ja": "バトゥール東京",
+      "my": "BATUR TOKYO"
+    },
+    "address": {
+      "en": "〒160-0021 Tokyo, Shinjuku City, Kabukicho, 2 Chome−4−10 Kdx Higashi Shinjuku, １Ｆ",
+      "ja": "〒160-0021 東京都新宿区歌舞伎町２丁目４−10 Kdx Higashi Shinjuku, １Ｆ",
+      "my": "〒160-0021 Tokyo, Shinjuku City, Kabukicho, 2 Chome−4−10 Kdx Higashi Shinjuku, １Ｆ"
+    },
+    "mapUrl": "https://www.google.com/maps/place/Wedding%26Party+BATUR+Tokyo/@35.6976482,139.7062481,883m/data=!3m2!1e3!4b1!4m6!3m5!1s0x60188cd8b5b7ac67:0x9ce2f5afc23c6d3a!8m2!3d35.6976482!4d139.7062481!16s%2Fg%2F1td9drlq?entry=ttu&g_ep=EgoyMDI2MDUxMC4wIKXMDSoASAFQAw%3D%3D"
+  },
+  "message": {
+    "en": "We invite you to share in our joy as we exchange marriage vows.",
+    "ja": "このたび 私たちは結婚することになりました\n皆様に見守られながら 新しい人生の第一歩を踏み出したいと存じます",
+    "my": "ကျွန်ုပ်တို့၏ မင်္ဂလာပွဲသို့ ကြွရောက်ချီးမြှင့်ပါရန် ဖိတ်ကြားအပ်ပါသည်။"
+  },
+  "googleFormUrl": "",
+  "googleScriptUrl": "Create a sheet on google sheet —> create app script —> add and deploy —> copy deploy url and paste it",
+  "showSchedule": true,
+  "schedule": [
+    {
+      "time": "11:00 ※要確認すること",
+      "title": {
+        "en": "Reception",
+        "ja": "受付開始",
+        "my": "ဧည့်ခံခြင်း"
+      },
+      "icon": "reception"
+    },
+    {
+      "time": "12:00",
+      "title": {
+        "en": "Banquet Begins",
+        "ja": "開宴",
+        "my": "မင်္ဂလာဧည့်ခံပွဲ စတင်ခြင်း"
+      },
+      "icon": "party"
+    }
+  ],
+  "faq": [
+    {
+      "question": {
+        "en": "Can I bring a +1?",
+        "ja": "同伴者を連れて行ってもいいですか？",
+        "my": "ဧည့်သည်အပို ခေါ်လာလို့ရပါသလား?"
+      },
+      "answer": {
+        "en": "We kindly ask that only those who received this invitation attend. If you are bringing a plus one, please register them in the RSVP form so we can arrange for you to be seated together.",
+        "ja": "お席の都合上、ご招待申し上げた方のみのご出席をお願いしております。お連れ様がいらっしゃる場合は、お席を隣同士でご用意いたしますので、RSVPフォームにてお知らせください。",
+        "my": "နေရာထိုင်ခင်း အခက်အခဲရှိပါသဖြင့် ဖိတ်ကြားထားသူများသာ တက်ရောက်ပေးပါရန် မေတ္တာရပ်ခံပါသည်။ အဖော်ခေါ်လာမည်ဆိုပါက နေရာအတူတကွစီစဉ်နိုင်ရန် RSVP တွင် ဖြည့်စွက်ပေးပါ။"
+      },
+      "icon": "users"
+    },
+    {
+      "question": {
+        "en": "What should I wear?",
+        "ja": "服装の指定はありますか？",
+        "my": "ဘာဝတ်ဆင်ရမလဲ?"
+      },
+      "answer": {
+        "en": "Formal attire is requested.",
+        "ja": "フォーマルな服装でお越しください。",
+        "my": "Formal ဝတ်စုံ ဝတ်ဆင်ပေးပါရန် မေတ္တာရပ်ခံပါသည်။"
+      },
+      "icon": "shirt"
+    },
+    {
+      "question": {
+        "en": "What time should I arrive?",
+        "ja": "何時に到着すればいいですか？",
+        "my": "ဘယ်အချိန်အရောက်လာရမလဲ?"
+      },
+      "answer": {
+        "en": "The ceremony begins at {{time}}. Please arrive 20 minutes early.",
+        "ja": "挙式は{{time}}に始まります。20分前にはお越しください。",
+        "my": "မင်္ဂလာပွဲသည် {{time}} တွင် စတင်မည်ဖြစ်ပါသဖြင့် မိနစ် ၂၀ ကြိုတင်ရောက်ရှိပေးပါ။"
+      },
+      "icon": "clock"
+    },
+    {
+      "question": {
+        "en": "Is parking available?",
+        "ja": "駐車場はありますか？",
+        "my": "ကားပါကင်ရှိပါသလား?"
+      },
+      "answer": {
+        "en": "Unfortunately, parking is not available at the venue. Please use nearby public parking.",
+        "ja": "申し訳ございませんが、会場に専用駐車場はございません。近隣のコインパーキングをご利用ください。",
+        "my": "ကားပါကင်မရှိပါ။ ကျေးဇူးပြု၍ အနီးနားရှိ အခပေးကားပါကင်ကို အသုံးပြုပါ။"
+      },
+      "icon": "map"
+    },
+    {
+      "question": {
+        "en": "I have a dietary restriction.",
+        "ja": "アレルギーがあります。",
+        "my": "မတည့်သည့် အစားအသောက်များ ရှိပါက?"
+      },
+      "answer": {
+        "en": "Please let us know when you RSVP so we can accommodate your needs.",
+        "ja": "RSVPフォームにてお知らせください。対応させていただきます。",
+        "my": "ကျေးဇူးပြု၍ RSVP ပုံစံတွင် ဖြည့်စွက်ဖော်ပြပေးပါ။"
+      },
+      "icon": "utensils"
+    },
+    {
+      "question": {
+        "en": "What is the deadline to RSVP?",
+        "ja": "返信期限はいつですか？",
+        "my": "ဘယ်တော့နောက်ဆုံး အကြောင်းပြန်ရမလဲ?"
+      },
+      "answer": {
+        "en": "Please RSVP by {{deadline}}.",
+        "ja": "{{deadline}}までにご返信をお願いいたします。",
+        "my": "{{deadline}} နောက်ဆုံးထား၍ အကြောင်းပြန်ပေးပါ။"
+      },
+      "icon": "calendar"
+    }
+  ],
+  "showGallery": true,
+  "gallery": [
+    "./photos/[event-folder]/gallery1.jpg",
+    "./photos/[event-folder]/gallery2.jpg",
+    "./photos/[event-folder]/gallery3.jpg"
+  ],
+  "musicUrl": "",
+  "images": {
+    "hero": "./photos/[event-folder]/cover.jpg",
+    "groom": "./photos/[event-folder]/groom.jpg",
+    "bride": "./photos/[event-folder]/bride.jpg"
+  },
+  "theme": {
+    "primary": "#C5A059",
+    "text": "#4A4A4A",
+    "backgroundTint": "#F5F0E6"
+  },
+  "fonts": {
+    "en": "\"Cormorant Garamond\"",
+    "ja": "\"Shippori Mincho\"",
+    "my": "\"Padauk\""
+  },
+  "visuals": {
+    "enableAnimations": true,
+    "enableEnvelope": true
+  }
+}
