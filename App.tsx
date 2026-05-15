@@ -88,11 +88,16 @@ const ensureEmbedUrl = (url: string): string => {
   if (!url) return '';
   if (url.includes('/embed') || url.includes('output=embed')) return url;
   if (url.includes('<iframe')) {
-      const match = url.match(/src="([^"]+)"/);
-      if (match) return match[1];
+    const match = url.match(/src="([^"]+)"/);
+    if (match) return match[1];
   }
-  const query = encodeURIComponent(url.trim());
-  return `https://maps.google.com/maps?q=${query}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
+  // Extract lat/lng from a regular Google Maps share URL (/@lat,lng,... pattern)
+  const coordMatch = url.match(/@([-\d.]+),([-\d.]+)/);
+  if (coordMatch) {
+    const [, lat, lng] = coordMatch;
+    return `https://maps.google.com/maps?q=${lat},${lng}&z=17&output=embed`;
+  }
+  return '';
 };
 
 const replacePhotoPathsWithEventFolder = (data: WeddingData, eventParam: string | null): WeddingData => {
