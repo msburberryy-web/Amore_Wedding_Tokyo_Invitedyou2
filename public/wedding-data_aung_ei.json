@@ -9,9 +9,9 @@
     "ja": "エイモンアウン",
     "my": "Ei Mon Aung"
   },
-  "date": "2026/06/28",
+  "date": "2026-06-28",
   "showCountdown": true,
-  "rsvpDeadline": "2026/05/24",
+  "rsvpDeadline": "2026-05-24",
   "location": {
     "name": {
       "en": "BATUR TOKYO",
@@ -31,7 +31,7 @@
     "my": "ကျွန်ုပ်တို့၏ မင်္ဂလာပွဲသို့ ကြွရောက်ချီးမြှင့်ပါရန် ဖိတ်ကြားအပ်ပါသည်။"
   },
   "googleFormUrl": "",
-  "googleScriptUrl": "Create a sheet on google sheet —> create app script —> add and deploy —> copy deploy url and paste it",
+  "googleScriptUrl": "",
   "showSchedule": true,
   "schedule": [
     {
