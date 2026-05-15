@@ -35,7 +35,7 @@
   "showSchedule": true,
   "schedule": [
     {
-      "time": "11:00 ※要確認すること",
+      "time": "11:00",
       "title": {
         "en": "Reception",
         "ja": "受付開始",

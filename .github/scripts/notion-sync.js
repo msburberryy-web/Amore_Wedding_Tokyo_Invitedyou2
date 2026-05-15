@@ -16,6 +16,18 @@ function generateUploadCode(folder) {
   return crypto.createHmac('sha256', UPLOAD_SECRET).update(folder).digest('hex').slice(0, 8);
 }
 
+function toMapEmbedUrl(url) {
+  if (!url) return '';
+  if (url.includes('/embed') || url.includes('output=embed')) return url;
+  if (url.includes('<iframe')) {
+    const m = url.match(/src="([^"]+)"/);
+    if (m) return m[1];
+  }
+  const coordMatch = url.match(/@([-\d.]+),([-\d.]+)/);
+  if (coordMatch) return `https://maps.google.com/maps?q=${coordMatch[1]},${coordMatch[2]}&z=17&output=embed`;
+  return url;
+}
+
 if (!TOKEN || !DB_ID) {
   console.error('Missing required env vars: NOTION_TOKEN, NOTION_DB_ID');
   process.exit(1);
@@ -93,7 +105,7 @@ function buildWeddingData(t, defaultData) {
   const location = {
     name:    { en: t.venue_name_en || '',    ja: t.venue_name_ja || '',    my: t.venue_name_my || '' },
     address: { en: t.venue_address_en || '', ja: t.venue_address_ja || '', my: t.venue_address_my || '' },
-    mapUrl:  t.map_url || ''
+    mapUrl:  toMapEmbedUrl(t.map_url || '')
   };
   if (t.parking_url) location.parkingUrl = t.parking_url;
 
