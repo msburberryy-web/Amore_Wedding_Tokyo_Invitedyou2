@@ -1,29 +1,29 @@
 {
   "groomName": {
-    "en": "Saito Kosuke",
-    "ja": "齋藤 弘将",
-    "my": "Saito Kosuke"
+    "en": "KHUN KYAW HEIN",
+    "ja": "クンチョーへイン",
+    "my": "KHUN KYAW HEIN"
   },
   "brideName": {
-    "en": "Nor Theingi Aung",
-    "ja": "ノーテインギアウン",
-    "my": "နော်သိင်္ဂီ အောင်"
+    "en": "NANG OWNMAR KHIN",
+    "ja": "ナンオンマーキン",
+    "my": "NANG OWNMAR KHIN"
   },
-  "date": "14 June 2026",
+  "date": "2026.06.21",
   "showCountdown": true,
-  "rsvpDeadline": "15 May 2026",
+  "rsvpDeadline": "2026.05.30",
   "location": {
     "name": {
-      "en": "East Gallery Tomi Garden 6F",
-      "ja": "East Gallery Tomi Garden 6F",
-      "my": "East Gallery Tomi Garden 6F"
+      "en": "MARRYGRANT AKASAKA",
+      "ja": "マリーグラン赤坂",
+      "my": "MARRYGRANT AKASAKA"
     },
     "address": {
-      "en": "Tomi Garden 6F, 3-24-7 Higashi, Shibuya-ku, Tokyo 150-0011",
-      "ja": "〒150-0011 東京都渋谷区東3-24-7 Tomi Garden 6F",
-      "my": "Tomi Garden 6F, 3-24-7 Higashi, Shibuya-ku, Tokyo 150-0011"
+      "en": "〒107-0052 Tokyo, Minato City, Akasaka, 2 Chome−14−5 Daiwa赤坂ビル",
+      "ja": "〒107-0052 東京都港区赤坂２丁目１４−５ Daiwa赤坂ビル",
+      "my": "〒107-0052 Tokyo, Minato City, Akasaka, 2 Chome−14−5 Daiwa赤坂ビル"
     },
-    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3242.1376950616395!2d139.70945609999998!3d35.648979!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188b4184d7f719%3A0x2703ca1e262633c7!2sEbisu East Gallery!5e0!3m2!1sen!2sjp!4v1777261562736!5m2!1sen!2sjp"
+    "mapUrl": "https://www.google.com/maps/place/MARRYGRANT+AKASAKA/@35.6723684,139.7378566,883m/data=!3m2!1e3!4b1!4m6!3m5!1s0x60188ba8ca2d0af5:0xf2758ef7523e5876!8m2!3d35.6723684!4d139.7378566!16s%2Fg%2F11qh2kcn5y?entry=ttu&g_ep=EgoyMDI2MDUxMC4wIKXMDSoASAFQAw%3D%3D"
   },
   "message": {
     "en": "We invite you to share in our joy as we exchange marriage vows.",
@@ -31,11 +31,11 @@
     "my": "ကျွန်ုပ်တို့၏ မင်္ဂလာပွဲသို့ ကြွရောက်ချီးမြှင့်ပါရန် ဖိတ်ကြားအပ်ပါသည်။"
   },
   "googleFormUrl": "",
-  "googleScriptUrl": "https://script.google.com/macros/s/AKfycbzVtChVXji0JoLCSYfF9G-_DFUxbiSbkG2yrKUod-13VdzYFyXeVXJhIIdRhIgTqIwi/exec",
+  "googleScriptUrl": "Create a sheet on google sheet —> create app script —> add and deploy —> copy deploy url and paste it",
   "showSchedule": true,
   "schedule": [
     {
-      "time": "11:30",
+      "time": "14:00",
       "title": {
         "en": "Reception",
         "ja": "受付開始",
@@ -44,7 +44,7 @@
       "icon": "reception"
     },
     {
-      "time": "12:00",
+      "time": "14:30",
       "title": {
         "en": "Banquet Begins",
         "ja": "開宴",
@@ -73,10 +73,10 @@
         "ja": "服装の指定はありますか？",
         "my": "ဘာဝတ်ဆင်ရမလဲ?"
       },
-      "answer": { 
-        "en": "There is no specific dress code, and we warmly invite you to join us in smart casual attire.",
-        "ja": "特にドレスコードはございませんが、どうぞ平服にてお越しください。",
-        "my": "အထူးသတ်မှတ်ထားသော ဝတ်စားဆင်ယင်မှုစည်းကမ်းမရှိပါ။ လွတ်လပ်ပေါ့ပါး၍ သပ်ရပ်လှပသော ဝတ်စားဆင်ယင်မှုဖြင့် ကြွရောက်ပေးပါရန် ဖိတ်ခေါ်အပ်ပါသည်။"
+      "answer": {
+        "en": "Formal attire is requested.",
+        "ja": "フォーマルな服装でお越しください。",
+        "my": "Formal ဝတ်စုံ ဝတ်ဆင်ပေးပါရန် မေတ္တာရပ်ခံပါသည်။"
       },
       "icon": "shirt"
     },
