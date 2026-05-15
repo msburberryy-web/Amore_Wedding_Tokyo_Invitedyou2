@@ -16,6 +16,45 @@ function generateUploadCode(folder) {
   return crypto.createHmac('sha256', UPLOAD_SECRET).update(folder).digest('hex').slice(0, 8);
 }
 
+function extractSheetId(url) {
+  if (!url) return '';
+  const m = url.match(/\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/);
+  return m ? m[1] : '';
+}
+
+function generateAppsScript(sheetId) {
+  return `// RSVP Script — sheet: https://docs.google.com/spreadsheets/d/${sheetId}
+// 1. Go to https://script.google.com → New project
+// 2. Replace all code with this file
+// 3. Deploy → New Deployment → Web App → Execute as: Me → Who has access: Anyone → Deploy
+// 4. Copy the Web App URL → paste it as googleScriptUrl in the wedding data JSON
+
+function doPost(e) {
+  var sheet = SpreadsheetApp.openById("${sheetId}").getActiveSheet();
+
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(["Timestamp","Attendance","Full Name","Email","Phone","Guests","Guest Info","Allergies","Message"]);
+  }
+
+  var p = e.parameter;
+  sheet.appendRow([
+    new Date(),
+    p.attendance,
+    p.full_name,
+    p.email,
+    p.phone,
+    p.guests,
+    p.guest_info,
+    p.allergies,
+    p.message
+  ]);
+
+  return ContentService.createTextOutput(JSON.stringify({ result: "success" }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+`;
+}
+
 function toMapEmbedUrl(url) {
   if (!url) return '';
   if (url.includes('/embed') || url.includes('output=embed')) return url;
@@ -148,7 +187,7 @@ function buildWeddingData(t, defaultData) {
 }
 
 // ─── UPDATE NOTION ────────────────────────────────────────────────────────────
-async function markDone(pageId, invitationUrl, uploadUrl, uploadCode) {
+async function markDone(pageId, invitationUrl, uploadUrl, uploadCode, scriptUrl) {
   const properties = {
     Status: { select: { name: 'Done' } }
   };
@@ -157,6 +196,7 @@ async function markDone(pageId, invitationUrl, uploadUrl, uploadCode) {
   if (invitationUrl) noteLines.push(`🔗 Invitation: ${invitationUrl}`);
   if (uploadUrl)     noteLines.push(`📸 Upload: ${uploadUrl}`);
   if (uploadCode)    noteLines.push(`🔑 Upload Code: ${uploadCode}`);
+  if (scriptUrl)     noteLines.push(`📝 RSVP Script: ${scriptUrl}`);
 
   if (noteLines.length) {
     properties.Note = {
@@ -188,9 +228,15 @@ async function processTask(task, publicDir, defaultData, fullProcess) {
   const uploadUrl     = SITE_BASE_URL ? `${SITE_BASE_URL}/?mode=upload&event=${groomSlug}.${brideSlug}` : '';
   const uploadCode    = UPLOAD_SECRET ? generateUploadCode(folder) : '';
 
+  const sheetId   = extractSheetId(tableData.google_sheet_url || '');
+  const scriptUrl = (sheetId && SITE_BASE_URL)
+    ? `${SITE_BASE_URL}/scripts/${folder}_rsvp_script.js`
+    : '';
+
   if (fullProcess) {
-    const jsonPath = path.join(publicDir, `wedding-data_${folder}.json`);
-    const photoDir = path.join(publicDir, 'photos', folder);
+    const jsonPath  = path.join(publicDir, `wedding-data_${folder}.json`);
+    const photoDir  = path.join(publicDir, 'photos', folder);
+    const scriptDir = path.join(publicDir, 'scripts');
 
     const data = buildWeddingData(tableData, defaultData);
     fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2), 'utf8');
@@ -201,9 +247,16 @@ async function processTask(task, publicDir, defaultData, fullProcess) {
       fs.writeFileSync(path.join(photoDir, '.gitkeep'), '');
       console.log(`  Created: public/photos/${folder}/`);
     }
+
+    if (sheetId) {
+      if (!fs.existsSync(scriptDir)) fs.mkdirSync(scriptDir, { recursive: true });
+      const scriptPath = path.join(scriptDir, `${folder}_rsvp_script.js`);
+      fs.writeFileSync(scriptPath, generateAppsScript(sheetId), 'utf8');
+      console.log(`  Written: public/scripts/${folder}_rsvp_script.js`);
+    }
   }
 
-  await markDone(task.id, invitationUrl, uploadUrl, uploadCode);
+  await markDone(task.id, invitationUrl, uploadUrl, uploadCode, scriptUrl);
   console.log(`  Notion: note updated | Upload Code: ${uploadCode || '(no secret set)'}`);
   return true;
 }
