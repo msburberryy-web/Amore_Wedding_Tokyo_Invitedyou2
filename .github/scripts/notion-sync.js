@@ -138,7 +138,7 @@ function isWebInvitationTask(page) {
 async function getTableData(pageId) {
   const blocksRes = await notionRequest(`/v1/blocks/${pageId}/children`);
   const tableBlock = (blocksRes.results || []).find(b => b.type === 'table');
-  if (!tableBlock) return null;
+  if (!tableBlock) return { data: null, tableBlockId: null };
 
   const rowsRes = await notionRequest(`/v1/blocks/${tableBlock.id}/children`);
   const data = {};
@@ -149,12 +149,12 @@ async function getTableData(pageId) {
     const val = cells[1]?.map(c => c.plain_text).join('').trim();
     if (key) data[key] = val || '';
   }
-  return data;
+  return { data, tableBlockId: tableBlock.id };
 }
 
 // ─── GENERATE JSON ────────────────────────────────────────────────────────────
-function buildWeddingData(t, defaultData) {
-  const galleryCount = parseInt(t.gallery_count || '3', 10);
+function buildWeddingData(t, defaultData, existing = null) {
+  const galleryCount = parseInt(t.gallery_count || String(existing?.gallery?.length || 3), 10);
   const gallery = Array.from({ length: galleryCount }, (_, i) =>
     `./photos/[event-folder]/gallery${i + 1}.jpg`
   );
@@ -180,10 +180,19 @@ function buildWeddingData(t, defaultData) {
           icon: 'party'
         }
       ].filter(Boolean)
-    : defaultData.schedule;
+    : (existing?.schedule || defaultData.schedule);
 
   return {
     ...defaultData,
+    // Preserve fields customised directly in GitHub JSON (overrides defaultData)
+    ...(existing && {
+      message: existing.message,
+      theme:   existing.theme,
+      fonts:   existing.fonts,
+      visuals: existing.visuals,
+      faq:     existing.faq,
+    }),
+    // Notion-sourced identity/event fields always win
     groomName:       { en: t.groom_en || '', ja: t.groom_ja || '', my: t.groom_my || '' },
     brideName:       { en: t.bride_en || '',  ja: t.bride_ja || '',  my: t.bride_my || '' },
     date:            normalizeDate(t.date || ''),
@@ -191,7 +200,9 @@ function buildWeddingData(t, defaultData) {
     rsvpDeadline:    normalizeDate(t.rsvp_deadline || ''),
     location,
     googleFormUrl:   '',
-    googleScriptUrl: t.google_script_url || '',
+    // Notion wins if set; otherwise keep existing GitHub value
+    googleScriptUrl: t.google_script_url || existing?.googleScriptUrl || '',
+    musicUrl:        t.music_url        || existing?.musicUrl        || '',
     showSchedule:    true,
     schedule,
     showGallery:     true,
@@ -202,6 +213,23 @@ function buildWeddingData(t, defaultData) {
       bride: './photos/[event-folder]/bride.jpg'
     }
   };
+}
+
+// ─── WRITE BACK TO NOTION TABLE ───────────────────────────────────────────────
+async function writeBackToNotionTable(tableBlockId, key, value) {
+  await notionRequest(`/v1/blocks/${tableBlockId}/children`, 'PATCH', {
+    children: [
+      {
+        type: 'table_row',
+        table_row: {
+          cells: [
+            [{ type: 'text', text: { content: key } }],
+            [{ type: 'text', text: { content: value } }]
+          ]
+        }
+      }
+    ]
+  });
 }
 
 // ─── UPDATE NOTION ────────────────────────────────────────────────────────────
@@ -231,7 +259,7 @@ async function processTask(task, publicDir, defaultData, fullProcess) {
   const title = titleProp?.title?.map(t => t.plain_text).join('') || '(untitled)';
   console.log(`\n${fullProcess ? 'Processing' : 'Refreshing note'}: "${title}" (${task.id})`);
 
-  const tableData = await getTableData(task.id);
+  const { data: tableData, tableBlockId } = await getTableData(task.id);
   if (!tableData || !tableData.groom_en || !tableData.bride_en) {
     console.log('  Skipping: table missing or groom_en/bride_en fields not found.');
     return false;
@@ -256,9 +284,20 @@ async function processTask(task, publicDir, defaultData, fullProcess) {
     const photoDir  = path.join(publicDir, 'photos', folder);
     const scriptDir = path.join(publicDir, 'scripts');
 
-    const data = buildWeddingData(tableData, defaultData);
+    const existing = fs.existsSync(jsonPath) ? JSON.parse(fs.readFileSync(jsonPath, 'utf8')) : null;
+    const data = buildWeddingData(tableData, defaultData, existing);
     fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2), 'utf8');
     console.log(`  Written: public/wedding-data_${folder}.json`);
+
+    // Write back to Notion any values present in GitHub JSON but absent from Notion table
+    if (tableBlockId && !tableData.google_script_url && data.googleScriptUrl) {
+      await writeBackToNotionTable(tableBlockId, 'google_script_url', data.googleScriptUrl);
+      console.log(`  Write-back: google_script_url → Notion table`);
+    }
+    if (tableBlockId && !tableData.music_url && data.musicUrl) {
+      await writeBackToNotionTable(tableBlockId, 'music_url', data.musicUrl);
+      console.log(`  Write-back: music_url → Notion table`);
+    }
 
     if (!fs.existsSync(photoDir)) {
       fs.mkdirSync(photoDir, { recursive: true });
