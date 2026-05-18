@@ -421,12 +421,21 @@ async function main() {
     processedIds.add(task.id);
   }
 
-  // Write back JSON → Notion for ALL remaining tasks regardless of status
-  console.log('\nSyncing JSON → Notion for all other tasks...');
-  const allTasks = await queryAllTasks();
-  for (const task of allTasks) {
-    if (processedIds.has(task.id) || !isWebInvitationTask(task)) continue;
-    await writeBackTask(task, publicDir, defaultData);
+  // Write back JSON → Notion for any remaining couples not covered above.
+  // Count existing couple JSON files — if all are already covered by Ready/Done,
+  // skip the expensive queryAllTasks() call entirely.
+  const coupleJsonCount = fs.readdirSync(publicDir)
+    .filter(f => /^wedding-data_.+\.json$/.test(f) && f !== 'wedding-data.json').length;
+
+  if (processedIds.size < coupleJsonCount) {
+    console.log('\nSome couples may have other statuses — syncing JSON → Notion...');
+    const allTasks = await queryAllTasks();
+    for (const task of allTasks) {
+      if (processedIds.has(task.id) || !isWebInvitationTask(task)) continue;
+      await writeBackTask(task, publicDir, defaultData);
+    }
+  } else {
+    console.log('\nAll known couples covered by Ready/Done pass — skipping full scan.');
   }
 
   console.log(`\nDone — ${processed} new couple(s) processed.`);
