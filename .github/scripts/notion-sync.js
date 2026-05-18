@@ -290,13 +290,21 @@ async function processTask(task, publicDir, defaultData, fullProcess) {
     console.log(`  Written: public/wedding-data_${folder}.json`);
 
     // Write back to Notion any values present in GitHub JSON but absent from Notion table
-    if (tableBlockId && !tableData.google_script_url && data.googleScriptUrl) {
-      await writeBackToNotionTable(tableBlockId, 'google_script_url', data.googleScriptUrl);
-      console.log(`  Write-back: google_script_url → Notion table`);
-    }
-    if (tableBlockId && !tableData.music_url && data.musicUrl) {
-      await writeBackToNotionTable(tableBlockId, 'music_url', data.musicUrl);
-      console.log(`  Write-back: music_url → Notion table`);
+    if (tableBlockId) {
+      const writeBackCandidates = [
+        ['google_script_url', data.googleScriptUrl],
+        ['music_url',         data.musicUrl],
+        ['message',           data.message ? JSON.stringify(data.message) : ''],
+        ['theme',             data.theme   ? JSON.stringify(data.theme)   : ''],
+        ['fonts',             data.fonts   ? JSON.stringify(data.fonts)   : ''],
+        ['visuals',           data.visuals ? JSON.stringify(data.visuals) : ''],
+      ];
+      for (const [key, value] of writeBackCandidates) {
+        if (!tableData[key] && value) {
+          await writeBackToNotionTable(tableBlockId, key, value);
+          console.log(`  Write-back: ${key} → Notion table`);
+        }
+      }
     }
 
     if (!fs.existsSync(photoDir)) {
