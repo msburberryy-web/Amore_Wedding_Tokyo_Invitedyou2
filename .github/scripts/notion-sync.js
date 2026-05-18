@@ -160,27 +160,38 @@ function buildWeddingData(t, defaultData, existing = null) {
   );
 
   const location = {
-    name:    { en: t.venue_name_en || '',    ja: t.venue_name_ja || '',    my: t.venue_name_my || '' },
-    address: { en: t.venue_address_en || '', ja: t.venue_address_ja || '', my: t.venue_address_my || '' },
-    mapUrl:  toMapEmbedUrl(t.map_url || '')
+    name: {
+      en: t.venue_name_en || existing?.location?.name?.en    || '',
+      ja: t.venue_name_ja || existing?.location?.name?.ja    || '',
+      my: t.venue_name_my || existing?.location?.name?.my    || '',
+    },
+    address: {
+      en: t.venue_address_en || existing?.location?.address?.en || '',
+      ja: t.venue_address_ja || existing?.location?.address?.ja || '',
+      my: t.venue_address_my || existing?.location?.address?.my || '',
+    },
+    mapUrl: toMapEmbedUrl(t.map_url || '') || existing?.location?.mapUrl || '',
   };
-  if (t.parking_url) location.parkingUrl = t.parking_url;
+  const parkingUrl = t.parking_url || existing?.location?.parkingUrl || '';
+  if (parkingUrl) location.parkingUrl = parkingUrl;
 
   // Build schedule from uketsuke_time + party_time if provided, else use default
-  const schedule = (t.uketsuke_time || t.party_time)
+  const uketsukeTime = t.uketsuke_time || existing?.schedule?.find(s => s.icon === 'reception')?.time || '';
+  const partyTime    = t.party_time    || existing?.schedule?.find(s => s.icon === 'party')?.time    || '';
+  const schedule = (uketsukeTime || partyTime)
     ? [
-        t.uketsuke_time && {
-          time: t.uketsuke_time,
+        uketsukeTime && {
+          time: uketsukeTime,
           title: { en: 'Reception', ja: '受付開始', my: 'ဧည့်ခံခြင်း' },
           icon: 'reception'
         },
-        t.party_time && {
-          time: t.party_time,
+        partyTime && {
+          time: partyTime,
           title: { en: 'Banquet Begins', ja: '開宴', my: 'မင်္ဂလာဧည့်ခံပွဲ စတင်ခြင်း' },
           icon: 'party'
         }
       ].filter(Boolean)
-    : (existing?.schedule || defaultData.schedule);
+    : defaultData.schedule;
 
   return {
     ...defaultData,
@@ -192,17 +203,24 @@ function buildWeddingData(t, defaultData, existing = null) {
       visuals: existing.visuals,
       faq:     existing.faq,
     }),
-    // Notion-sourced identity/event fields always win
-    groomName:       { en: t.groom_en || '', ja: t.groom_ja || '', my: t.groom_my || '' },
-    brideName:       { en: t.bride_en || '',  ja: t.bride_ja || '',  my: t.bride_my || '' },
-    date:            normalizeDate(t.date || ''),
+    // Notion wins if set; fallback to existing GitHub value
+    groomName: {
+      en: t.groom_en || existing?.groomName?.en || '',
+      ja: t.groom_ja || existing?.groomName?.ja || '',
+      my: t.groom_my || existing?.groomName?.my || '',
+    },
+    brideName: {
+      en: t.bride_en || existing?.brideName?.en || '',
+      ja: t.bride_ja || existing?.brideName?.ja || '',
+      my: t.bride_my || existing?.brideName?.my || '',
+    },
+    date:            normalizeDate(t.date || '')            || existing?.date         || '',
     showCountdown:   true,
-    rsvpDeadline:    normalizeDate(t.rsvp_deadline || ''),
+    rsvpDeadline:    normalizeDate(t.rsvp_deadline || '')   || existing?.rsvpDeadline || '',
     location,
     googleFormUrl:   '',
-    // Notion wins if set; otherwise keep existing GitHub value
     googleScriptUrl: t.google_script_url || existing?.googleScriptUrl || '',
-    musicUrl:        t.music_url        || existing?.musicUrl        || '',
+    musicUrl:        t.music_url         || existing?.musicUrl         || '',
     showSchedule:    true,
     schedule,
     showGallery:     true,
@@ -292,6 +310,24 @@ async function processTask(task, publicDir, defaultData, fullProcess) {
     // Write back to Notion any values present in GitHub JSON but absent from Notion table
     if (tableBlockId) {
       const writeBackCandidates = [
+        ['groom_en',          data.groomName.en],
+        ['groom_ja',          data.groomName.ja],
+        ['groom_my',          data.groomName.my],
+        ['bride_en',          data.brideName.en],
+        ['bride_ja',          data.brideName.ja],
+        ['bride_my',          data.brideName.my],
+        ['date',              data.date],
+        ['rsvp_deadline',     data.rsvpDeadline],
+        ['venue_name_en',     data.location.name.en],
+        ['venue_name_ja',     data.location.name.ja],
+        ['venue_name_my',     data.location.name.my],
+        ['venue_address_en',  data.location.address.en],
+        ['venue_address_ja',  data.location.address.ja],
+        ['venue_address_my',  data.location.address.my],
+        ['map_url',           data.location.mapUrl],
+        ['parking_url',       data.location.parkingUrl || ''],
+        ['uketsuke_time',     data.schedule?.find(s => s.icon === 'reception')?.time || ''],
+        ['party_time',        data.schedule?.find(s => s.icon === 'party')?.time     || ''],
         ['google_script_url', data.googleScriptUrl],
         ['music_url',         data.musicUrl],
         ['message',           data.message ? JSON.stringify(data.message) : ''],
