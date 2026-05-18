@@ -1,0 +1,35 @@
+name: Sync Gallery Count
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'public/photos/**/gallery*.jpg'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Update gallery arrays in JSON files
+        run: node .github/scripts/sync-gallery.js
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/wedding-data_*.json
+          git diff --staged --quiet && echo "No changes to commit." || (
+            git commit -m "chore: sync gallery count from uploaded photos" &&
+            git push origin HEAD
+          )
