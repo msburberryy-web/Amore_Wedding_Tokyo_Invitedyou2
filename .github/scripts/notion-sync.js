@@ -55,6 +55,24 @@ function doPost(e) {
 `;
 }
 
+function normalizeDate(dateStr) {
+  if (!dateStr) return dateStr;
+  // Already ISO (YYYY-MM-DD or YYYY-MM-DDTHH:MM) — pass through
+  if (/^\d{4}-\d{2}-\d{2}/.test(dateStr)) return dateStr;
+  // Dot or slash separated: 2026.06.21 or 2026/06/21 (preserves any trailing time)
+  const dotSlash = dateStr.match(/^(\d{4})[./](\d{2})[./](\d{2})(.*)/);
+  if (dotSlash) return `${dotSlash[1]}-${dotSlash[2]}-${dotSlash[3]}${dotSlash[4]}`;
+  // Human-readable fallback (e.g. "14 June 2026") — reformat to YYYY-MM-DD via UTC
+  const parsed = new Date(dateStr);
+  if (!isNaN(parsed.getTime())) {
+    const y = parsed.getUTCFullYear();
+    const m = String(parsed.getUTCMonth() + 1).padStart(2, '0');
+    const d = String(parsed.getUTCDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+  return dateStr; // unparseable — leave as-is
+}
+
 function toMapEmbedUrl(url) {
   if (!url) return '';
   if (url.includes('/embed') || url.includes('output=embed')) return url;
@@ -168,9 +186,9 @@ function buildWeddingData(t, defaultData) {
     ...defaultData,
     groomName:       { en: t.groom_en || '', ja: t.groom_ja || '', my: t.groom_my || '' },
     brideName:       { en: t.bride_en || '',  ja: t.bride_ja || '',  my: t.bride_my || '' },
-    date:            t.date || '',
+    date:            normalizeDate(t.date || ''),
     showCountdown:   true,
-    rsvpDeadline:    t.rsvp_deadline || '',
+    rsvpDeadline:    normalizeDate(t.rsvp_deadline || ''),
     location,
     googleFormUrl:   '',
     googleScriptUrl: t.google_script_url || '',
