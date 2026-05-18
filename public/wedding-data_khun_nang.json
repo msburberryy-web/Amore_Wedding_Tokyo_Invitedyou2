@@ -137,7 +137,10 @@
   "gallery": [
     "./photos/[event-folder]/gallery1.jpg",
     "./photos/[event-folder]/gallery2.jpg",
-    "./photos/[event-folder]/gallery3.jpg"
+    "./photos/[event-folder]/gallery3.jpg",
+    "./photos/[event-folder]/gallery4.jpg",
+    "./photos/[event-folder]/gallery5.jpg",
+    "./photos/[event-folder]/gallery6.jpg"
   ],
   "musicUrl": "",
   "images": {
