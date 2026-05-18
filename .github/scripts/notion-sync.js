@@ -122,6 +122,11 @@ async function queryTasksByStatus(status) {
   return result.results || [];
 }
 
+async function queryAllTasks() {
+  const result = await notionRequest(`/v1/databases/${DB_ID}/query`, 'POST', {});
+  return result.results || [];
+}
+
 // ─── IDENTIFY ─────────────────────────────────────────────────────────────────
 function isWebInvitationTask(page) {
   // Primary: "Wedding Action Items" relation contains "Web invitation preparation"
@@ -250,6 +255,43 @@ async function writeBackToNotionTable(tableBlockId, key, value) {
   });
 }
 
+// ─── RUN WRITE-BACK ───────────────────────────────────────────────────────────
+async function runWriteBack(tableData, tableBlockId, data) {
+  if (!tableBlockId) return;
+  const candidates = [
+    ['groom_en',          data.groomName?.en || ''],
+    ['groom_ja',          data.groomName?.ja || ''],
+    ['groom_my',          data.groomName?.my || ''],
+    ['bride_en',          data.brideName?.en || ''],
+    ['bride_ja',          data.brideName?.ja || ''],
+    ['bride_my',          data.brideName?.my || ''],
+    ['date',              data.date || ''],
+    ['rsvp_deadline',     data.rsvpDeadline || ''],
+    ['venue_name_en',     data.location?.name?.en || ''],
+    ['venue_name_ja',     data.location?.name?.ja || ''],
+    ['venue_name_my',     data.location?.name?.my || ''],
+    ['venue_address_en',  data.location?.address?.en || ''],
+    ['venue_address_ja',  data.location?.address?.ja || ''],
+    ['venue_address_my',  data.location?.address?.my || ''],
+    ['map_url',           data.location?.mapUrl || ''],
+    ['parking_url',       data.location?.parkingUrl || ''],
+    ['uketsuke_time',     data.schedule?.find(s => s.icon === 'reception')?.time || ''],
+    ['party_time',        data.schedule?.find(s => s.icon === 'party')?.time     || ''],
+    ['google_script_url', data.googleScriptUrl || ''],
+    ['music_url',         data.musicUrl || ''],
+    ['message',           data.message ? JSON.stringify(data.message) : ''],
+    ['theme',             data.theme   ? JSON.stringify(data.theme)   : ''],
+    ['fonts',             data.fonts   ? JSON.stringify(data.fonts)   : ''],
+    ['visuals',           data.visuals ? JSON.stringify(data.visuals) : ''],
+  ];
+  for (const [key, value] of candidates) {
+    if (!tableData[key] && value) {
+      await writeBackToNotionTable(tableBlockId, key, value);
+      console.log(`  Write-back: ${key} → Notion`);
+    }
+  }
+}
+
 // ─── UPDATE NOTION ────────────────────────────────────────────────────────────
 async function markDone(pageId, invitationUrl, uploadUrl, uploadCode, scriptUrl) {
   const properties = {
@@ -297,51 +339,17 @@ async function processTask(task, publicDir, defaultData, fullProcess) {
     ? `${SITE_BASE_URL}/scripts/${folder}_rsvp_script.js`
     : '';
 
+  // Always build merged data (needed for write-back in all cases)
+  const jsonPath = path.join(publicDir, `wedding-data_${folder}.json`);
+  const existing = fs.existsSync(jsonPath) ? JSON.parse(fs.readFileSync(jsonPath, 'utf8')) : null;
+  const data = buildWeddingData(tableData, defaultData, existing);
+
   if (fullProcess) {
-    const jsonPath  = path.join(publicDir, `wedding-data_${folder}.json`);
     const photoDir  = path.join(publicDir, 'photos', folder);
     const scriptDir = path.join(publicDir, 'scripts');
 
-    const existing = fs.existsSync(jsonPath) ? JSON.parse(fs.readFileSync(jsonPath, 'utf8')) : null;
-    const data = buildWeddingData(tableData, defaultData, existing);
     fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2), 'utf8');
     console.log(`  Written: public/wedding-data_${folder}.json`);
-
-    // Write back to Notion any values present in GitHub JSON but absent from Notion table
-    if (tableBlockId) {
-      const writeBackCandidates = [
-        ['groom_en',          data.groomName.en],
-        ['groom_ja',          data.groomName.ja],
-        ['groom_my',          data.groomName.my],
-        ['bride_en',          data.brideName.en],
-        ['bride_ja',          data.brideName.ja],
-        ['bride_my',          data.brideName.my],
-        ['date',              data.date],
-        ['rsvp_deadline',     data.rsvpDeadline],
-        ['venue_name_en',     data.location.name.en],
-        ['venue_name_ja',     data.location.name.ja],
-        ['venue_name_my',     data.location.name.my],
-        ['venue_address_en',  data.location.address.en],
-        ['venue_address_ja',  data.location.address.ja],
-        ['venue_address_my',  data.location.address.my],
-        ['map_url',           data.location.mapUrl],
-        ['parking_url',       data.location.parkingUrl || ''],
-        ['uketsuke_time',     data.schedule?.find(s => s.icon === 'reception')?.time || ''],
-        ['party_time',        data.schedule?.find(s => s.icon === 'party')?.time     || ''],
-        ['google_script_url', data.googleScriptUrl],
-        ['music_url',         data.musicUrl],
-        ['message',           data.message ? JSON.stringify(data.message) : ''],
-        ['theme',             data.theme   ? JSON.stringify(data.theme)   : ''],
-        ['fonts',             data.fonts   ? JSON.stringify(data.fonts)   : ''],
-        ['visuals',           data.visuals ? JSON.stringify(data.visuals) : ''],
-      ];
-      for (const [key, value] of writeBackCandidates) {
-        if (!tableData[key] && value) {
-          await writeBackToNotionTable(tableBlockId, key, value);
-          console.log(`  Write-back: ${key} → Notion table`);
-        }
-      }
-    }
 
     if (!fs.existsSync(photoDir)) {
       fs.mkdirSync(photoDir, { recursive: true });
@@ -357,9 +365,31 @@ async function processTask(task, publicDir, defaultData, fullProcess) {
     }
   }
 
+  // Write back to Notion for ALL cases (Ready, Done, and any other status)
+  await runWriteBack(tableData, tableBlockId, data);
+
   await markDone(task.id, invitationUrl, uploadUrl, uploadCode, scriptUrl);
   console.log(`  Notion: note updated | Upload Code: ${uploadCode || '(no secret set)'}`);
   return true;
+}
+
+// Write back JSON → Notion for tasks with any status (no status change)
+async function writeBackTask(task, publicDir, defaultData) {
+  const titleProp = Object.values(task.properties).find(p => p.type === 'title');
+  const title = titleProp?.title?.map(t => t.plain_text).join('') || '(untitled)';
+
+  const { data: tableData, tableBlockId } = await getTableData(task.id);
+  if (!tableData?.groom_en || !tableData?.bride_en || !tableBlockId) return;
+
+  const slug = s => s.toLowerCase().trim().split(/\s+/)[0];
+  const folder   = `${slug(tableData.groom_en)}_${slug(tableData.bride_en)}`;
+  const jsonPath = path.join(publicDir, `wedding-data_${folder}.json`);
+  if (!fs.existsSync(jsonPath)) return;
+
+  const existing = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+  const data = buildWeddingData(tableData, defaultData, existing);
+  await runWriteBack(tableData, tableBlockId, data);
+  console.log(`  Write-back complete for "${title}"`);
 }
 
 async function main() {
@@ -374,17 +404,29 @@ async function main() {
   ]);
   console.log(`Found ${readyTasks.length} Ready, ${doneTasks.length} Done task(s).`);
 
+  const processedIds = new Set();
   let processed = 0;
 
   for (const task of readyTasks) {
     if (!isWebInvitationTask(task)) continue;
-    if (await processTask(task, publicDir, defaultData, true)) processed++;
+    if (await processTask(task, publicDir, defaultData, true)) {
+      processedIds.add(task.id);
+      processed++;
+    }
   }
 
-  // Refresh notes on Done tasks so upload code stays in sync with UPLOAD_SECRET
   for (const task of doneTasks) {
     if (!isWebInvitationTask(task)) continue;
     await processTask(task, publicDir, defaultData, false);
+    processedIds.add(task.id);
+  }
+
+  // Write back JSON → Notion for ALL remaining tasks regardless of status
+  console.log('\nSyncing JSON → Notion for all other tasks...');
+  const allTasks = await queryAllTasks();
+  for (const task of allTasks) {
+    if (processedIds.has(task.id) || !isWebInvitationTask(task)) continue;
+    await writeBackTask(task, publicDir, defaultData);
   }
 
   console.log(`\nDone — ${processed} new couple(s) processed.`);
