@@ -1,17 +1,17 @@
 {
   "groomName": {
-    "en": "KHUN KYAW HEIN",
+    "en": "KHUN KYAW HEIN @ KHUN AUNG KYAW HEIN",
     "ja": "クンチョーへイン",
-    "my": "KHUN KYAW HEIN"
+    "my": "KHUN KYAW HEIN @ KHUN AUNG KYAW HEIN"
   },
   "brideName": {
-    "en": "NANG OWNMAR KHIN",
+    "en": "NANG OHNMAR KHIN @ NANG OWN SHIN",
     "ja": "ナンオンマーキン",
-    "my": "NANG OWNMAR KHIN"
+    "my": "NANG OHNMAR KHIN @ NANG OWN SHIN"
   },
-  "date": "2026.06.21",
+  "date": "2026-06-21",
   "showCountdown": true,
-  "rsvpDeadline": "2026.05.30",
+  "rsvpDeadline": "2026-05-30",
   "location": {
     "name": {
       "en": "MARRYGRANT AKASAKA",

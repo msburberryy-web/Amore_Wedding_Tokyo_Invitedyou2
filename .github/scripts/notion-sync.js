@@ -55,6 +55,24 @@ function doPost(e) {
 `;
 }
 
+function normalizeDate(dateStr) {
+  if (!dateStr) return dateStr;
+  // Already ISO (YYYY-MM-DD or YYYY-MM-DDTHH:MM) — pass through
+  if (/^\d{4}-\d{2}-\d{2}/.test(dateStr)) return dateStr;
+  // Dot or slash separated: 2026.06.21 or 2026/06/21 (preserves any trailing time)
+  const dotSlash = dateStr.match(/^(\d{4})[./](\d{2})[./](\d{2})(.*)/);
+  if (dotSlash) return `${dotSlash[1]}-${dotSlash[2]}-${dotSlash[3]}${dotSlash[4]}`;
+  // Human-readable fallback (e.g. "14 June 2026") — reformat to YYYY-MM-DD via UTC
+  const parsed = new Date(dateStr);
+  if (!isNaN(parsed.getTime())) {
+    const y = parsed.getUTCFullYear();
+    const m = String(parsed.getUTCMonth() + 1).padStart(2, '0');
+    const d = String(parsed.getUTCDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+  return dateStr; // unparseable — leave as-is
+}
+
 function toMapEmbedUrl(url) {
   if (!url) return '';
   if (url.includes('/embed') || url.includes('output=embed')) return url;
@@ -120,7 +138,7 @@ function isWebInvitationTask(page) {
 async function getTableData(pageId) {
   const blocksRes = await notionRequest(`/v1/blocks/${pageId}/children`);
   const tableBlock = (blocksRes.results || []).find(b => b.type === 'table');
-  if (!tableBlock) return null;
+  if (!tableBlock) return { data: null, tableBlockId: null };
 
   const rowsRes = await notionRequest(`/v1/blocks/${tableBlock.id}/children`);
   const data = {};
@@ -131,33 +149,44 @@ async function getTableData(pageId) {
     const val = cells[1]?.map(c => c.plain_text).join('').trim();
     if (key) data[key] = val || '';
   }
-  return data;
+  return { data, tableBlockId: tableBlock.id };
 }
 
 // ─── GENERATE JSON ────────────────────────────────────────────────────────────
-function buildWeddingData(t, defaultData) {
-  const galleryCount = parseInt(t.gallery_count || '3', 10);
+function buildWeddingData(t, defaultData, existing = null) {
+  const galleryCount = parseInt(t.gallery_count || String(existing?.gallery?.length || 3), 10);
   const gallery = Array.from({ length: galleryCount }, (_, i) =>
     `./photos/[event-folder]/gallery${i + 1}.jpg`
   );
 
   const location = {
-    name:    { en: t.venue_name_en || '',    ja: t.venue_name_ja || '',    my: t.venue_name_my || '' },
-    address: { en: t.venue_address_en || '', ja: t.venue_address_ja || '', my: t.venue_address_my || '' },
-    mapUrl:  toMapEmbedUrl(t.map_url || '')
+    name: {
+      en: t.venue_name_en || existing?.location?.name?.en    || '',
+      ja: t.venue_name_ja || existing?.location?.name?.ja    || '',
+      my: t.venue_name_my || existing?.location?.name?.my    || '',
+    },
+    address: {
+      en: t.venue_address_en || existing?.location?.address?.en || '',
+      ja: t.venue_address_ja || existing?.location?.address?.ja || '',
+      my: t.venue_address_my || existing?.location?.address?.my || '',
+    },
+    mapUrl: toMapEmbedUrl(t.map_url || '') || existing?.location?.mapUrl || '',
   };
-  if (t.parking_url) location.parkingUrl = t.parking_url;
+  const parkingUrl = t.parking_url || existing?.location?.parkingUrl || '';
+  if (parkingUrl) location.parkingUrl = parkingUrl;
 
   // Build schedule from uketsuke_time + party_time if provided, else use default
-  const schedule = (t.uketsuke_time || t.party_time)
+  const uketsukeTime = t.uketsuke_time || existing?.schedule?.find(s => s.icon === 'reception')?.time || '';
+  const partyTime    = t.party_time    || existing?.schedule?.find(s => s.icon === 'party')?.time    || '';
+  const schedule = (uketsukeTime || partyTime)
     ? [
-        t.uketsuke_time && {
-          time: t.uketsuke_time,
+        uketsukeTime && {
+          time: uketsukeTime,
           title: { en: 'Reception', ja: '受付開始', my: 'ဧည့်ခံခြင်း' },
           icon: 'reception'
         },
-        t.party_time && {
-          time: t.party_time,
+        partyTime && {
+          time: partyTime,
           title: { en: 'Banquet Begins', ja: '開宴', my: 'မင်္ဂလာဧည့်ခံပွဲ စတင်ခြင်း' },
           icon: 'party'
         }
@@ -166,14 +195,32 @@ function buildWeddingData(t, defaultData) {
 
   return {
     ...defaultData,
-    groomName:       { en: t.groom_en || '', ja: t.groom_ja || '', my: t.groom_my || '' },
-    brideName:       { en: t.bride_en || '',  ja: t.bride_ja || '',  my: t.bride_my || '' },
-    date:            t.date || '',
+    // Preserve fields customised directly in GitHub JSON (overrides defaultData)
+    ...(existing && {
+      message: existing.message,
+      theme:   existing.theme,
+      fonts:   existing.fonts,
+      visuals: existing.visuals,
+      faq:     existing.faq,
+    }),
+    // Notion wins if set; fallback to existing GitHub value
+    groomName: {
+      en: t.groom_en || existing?.groomName?.en || '',
+      ja: t.groom_ja || existing?.groomName?.ja || '',
+      my: t.groom_my || existing?.groomName?.my || '',
+    },
+    brideName: {
+      en: t.bride_en || existing?.brideName?.en || '',
+      ja: t.bride_ja || existing?.brideName?.ja || '',
+      my: t.bride_my || existing?.brideName?.my || '',
+    },
+    date:            normalizeDate(t.date || '')            || existing?.date         || '',
     showCountdown:   true,
-    rsvpDeadline:    t.rsvp_deadline || '',
+    rsvpDeadline:    normalizeDate(t.rsvp_deadline || '')   || existing?.rsvpDeadline || '',
     location,
     googleFormUrl:   '',
-    googleScriptUrl: t.google_script_url || '',
+    googleScriptUrl: t.google_script_url || existing?.googleScriptUrl || '',
+    musicUrl:        t.music_url         || existing?.musicUrl         || '',
     showSchedule:    true,
     schedule,
     showGallery:     true,
@@ -184,6 +231,23 @@ function buildWeddingData(t, defaultData) {
       bride: './photos/[event-folder]/bride.jpg'
     }
   };
+}
+
+// ─── WRITE BACK TO NOTION TABLE ───────────────────────────────────────────────
+async function writeBackToNotionTable(tableBlockId, key, value) {
+  await notionRequest(`/v1/blocks/${tableBlockId}/children`, 'PATCH', {
+    children: [
+      {
+        type: 'table_row',
+        table_row: {
+          cells: [
+            [{ type: 'text', text: { content: key } }],
+            [{ type: 'text', text: { content: value } }]
+          ]
+        }
+      }
+    ]
+  });
 }
 
 // ─── UPDATE NOTION ────────────────────────────────────────────────────────────
@@ -213,7 +277,7 @@ async function processTask(task, publicDir, defaultData, fullProcess) {
   const title = titleProp?.title?.map(t => t.plain_text).join('') || '(untitled)';
   console.log(`\n${fullProcess ? 'Processing' : 'Refreshing note'}: "${title}" (${task.id})`);
 
-  const tableData = await getTableData(task.id);
+  const { data: tableData, tableBlockId } = await getTableData(task.id);
   if (!tableData || !tableData.groom_en || !tableData.bride_en) {
     console.log('  Skipping: table missing or groom_en/bride_en fields not found.');
     return false;
@@ -238,9 +302,46 @@ async function processTask(task, publicDir, defaultData, fullProcess) {
     const photoDir  = path.join(publicDir, 'photos', folder);
     const scriptDir = path.join(publicDir, 'scripts');
 
-    const data = buildWeddingData(tableData, defaultData);
+    const existing = fs.existsSync(jsonPath) ? JSON.parse(fs.readFileSync(jsonPath, 'utf8')) : null;
+    const data = buildWeddingData(tableData, defaultData, existing);
     fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2), 'utf8');
     console.log(`  Written: public/wedding-data_${folder}.json`);
+
+    // Write back to Notion any values present in GitHub JSON but absent from Notion table
+    if (tableBlockId) {
+      const writeBackCandidates = [
+        ['groom_en',          data.groomName.en],
+        ['groom_ja',          data.groomName.ja],
+        ['groom_my',          data.groomName.my],
+        ['bride_en',          data.brideName.en],
+        ['bride_ja',          data.brideName.ja],
+        ['bride_my',          data.brideName.my],
+        ['date',              data.date],
+        ['rsvp_deadline',     data.rsvpDeadline],
+        ['venue_name_en',     data.location.name.en],
+        ['venue_name_ja',     data.location.name.ja],
+        ['venue_name_my',     data.location.name.my],
+        ['venue_address_en',  data.location.address.en],
+        ['venue_address_ja',  data.location.address.ja],
+        ['venue_address_my',  data.location.address.my],
+        ['map_url',           data.location.mapUrl],
+        ['parking_url',       data.location.parkingUrl || ''],
+        ['uketsuke_time',     data.schedule?.find(s => s.icon === 'reception')?.time || ''],
+        ['party_time',        data.schedule?.find(s => s.icon === 'party')?.time     || ''],
+        ['google_script_url', data.googleScriptUrl],
+        ['music_url',         data.musicUrl],
+        ['message',           data.message ? JSON.stringify(data.message) : ''],
+        ['theme',             data.theme   ? JSON.stringify(data.theme)   : ''],
+        ['fonts',             data.fonts   ? JSON.stringify(data.fonts)   : ''],
+        ['visuals',           data.visuals ? JSON.stringify(data.visuals) : ''],
+      ];
+      for (const [key, value] of writeBackCandidates) {
+        if (!tableData[key] && value) {
+          await writeBackToNotionTable(tableBlockId, key, value);
+          console.log(`  Write-back: ${key} → Notion table`);
+        }
+      }
+    }
 
     if (!fs.existsSync(photoDir)) {
       fs.mkdirSync(photoDir, { recursive: true });
