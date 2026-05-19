@@ -23,8 +23,8 @@
       "ja": "埼玉県和光市新倉２−２７−１８",
       "my": "2 Chome-27-18 Niikura, Wako, Saitama 351-0115"
     },
-    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3236.181391797309!2d139.62001697637282!3d35.795479972550645!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018eb8098d1e8d9%3A0x499148df5523bc90!2zVEhFUkFWQURBIE1PTkFTVEVSWSAoV2Frb3NoaSDhgJnhgLzhgJThgLrhgJnhgKzhgJjhgK_hgJThgLrhgLjhgIDhgLzhgK7hgLjhgIDhgLvhgLHhgKzhgIThgLrhgLgp!5e0!3m2!1sen!2sjp!4v1768835219076!5m2!1sen!2sjp"
-    ,"parkingUrl": ""
+    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3236.181391797309!2d139.62001697637282!3d35.795479972550645!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018eb8098d1e8d9%3A0x499148df5523bc90!2zVEhFUkFWQURBIE1PTkFTVEVSWSAoV2Frb3NoaSDhgJnhgLzhgJThgLrhgJnhgKzhgJjhgK_hgJThgLrhgLjhgIDhgLzhgK7hgLjhgIDhgLvhgLHhgKzhgIThgLrhgLgp!5e0!3m2!1sen!2sjp!4v1768835219076!5m2!1sen!2sjp",
+    "parkingUrl": ""
   },
   "message": {
     "en": "We invite you to share in our joy as we exchange marriage vows.",
@@ -109,11 +109,11 @@
         "ja": "駐車場はありますか？",
         "my": "ကားပါကင်ရှိပါသလား?"
       },
-        "answer": {
-          "en": "Unfortunately, parking is not available at the venue. Please use nearby public parking. ",
-          "ja": "申し訳ございませんが、会場に専用駐車場はございません。近隣のコインパーキングをご利用ください。",
-          "my": "ကားပါကင်မရှိပါ။ ကျေးဇူးပြု၍ အနီးနားရှိ အခပေးကားပါကင်ကို အသုံးပြုပါ။"
-        },
+      "answer": {
+        "en": "Unfortunately, parking is not available at the venue. Please use nearby public parking. ",
+        "ja": "申し訳ございませんが、会場に専用駐車場はございません。近隣のコインパーキングをご利用ください。",
+        "my": "ကားပါကင်မရှိပါ။ ကျေးဇူးပြု၍ အနီးနားရှိ အခပေးကားပါကင်ကို အသုံးပြုပါ။"
+      },
       "icon": "map"
     },
     {
@@ -128,6 +128,19 @@
         "my": "{{deadline}} နောက်ဆုံးထား၍ အကြောင်းပြန်ပေးပါ။"
       },
       "icon": "calendar"
+    },
+    {
+      "question": {
+        "en": "Note for guests with children",
+        "ja": "お子様連れでご参列の皆様へ",
+        "my": "ကလေးငယ်များဖြင့် တက်ရောက်မည့် ဧည့်သည်များအတွက် မှတ်ချက်"
+      },
+      "answer": {
+        "en": "We would love for your little ones to join us! To help us coordinate seating and special meal requirements, please kindly include the number of children, their ages, and any food allergies or dietary restrictions in the RSVP form.",
+        "ja": "お子様と一緒にご参列いただけることを楽しみにしております。お席やキッズミールをスムーズにご用意させていただくため、大変お手数ですが、RSVPフォームにて「お子様の人数」「ご年齢」「食物アレルギーの有無」をご記入いただけますと幸いです。",
+        "my": "ကျွန်ုပ်တို့၏ မင်္ဂလာပွဲသို့ ကလေးငယ်များ ခေါ်ဆောင်လာမည်ဆိုပါက နေရာထိုင်ခင်းနှင့် အစားအသောက်များကို ကြိုတင်စီစဉ်နိုင်ရန် RSVP form တွင် ကလေးဦးရေ၊ အသက်အရွယ် နှင့် အစားအသောက် ဓာတ်မတည့်မှု ရှိ/မရှိ တို့ကို ဖြည့်စွက်ပေးပါရန် လေးစားစွာ မေတ္တာရပ်ခံအပ်ပါသည်။"
+      },
+      "icon": "baby"
     }
   ],
   "showGallery": true,

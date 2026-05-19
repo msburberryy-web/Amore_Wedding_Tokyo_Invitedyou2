@@ -16,7 +16,7 @@ export interface ScheduleItem {
 export interface FaqItem {
   question: LocalizedString;
   answer: LocalizedString;
-  icon: 'users' | 'shirt' | 'clock' | 'map' | 'utensils' | 'calendar' | 'gift' | 'info';
+  icon: 'users' | 'shirt' | 'clock' | 'map' | 'utensils' | 'calendar' | 'gift' | 'info' | 'baby';
 }
 
 export interface ThemeColors {
@@ -164,12 +164,21 @@ export const DEFAULT_DATA: WeddingData = {
     },
     {
       question: { en: "What is the deadline to RSVP?", ja: "返信期限はいつですか？", my: "ဘယ်တော့နောက်ဆုံး အကြောင်းပြန်ရမလဲ?" },
-      answer: { 
-        en: "Please respond by {{deadline}}.", 
-        ja: "{{deadline}}までにご返信をお願いいたします。", 
-        my: "{{deadline}} နောက်ဆုံးထား၍ အကြောင်းပြန်ပေးပါ။" 
+      answer: {
+        en: "Please respond by {{deadline}}.",
+        ja: "{{deadline}}までにご返信をお願いいたします。",
+        my: "{{deadline}} နောက်ဆုံးထား၍ အကြောင်းပြန်ပေးပါ။"
       },
       icon: 'calendar'
+    },
+    {
+      question: { en: "Note for guests with children", ja: "お子様連れでご参列の皆様へ", my: "ကလေးငယ်များဖြင့် တက်ရောက်မည့် ဧည့်သည်များအတွက် မှတ်ချက်" },
+      answer: {
+        en: "We would love for your little ones to join us! To help us coordinate seating and special meal requirements, please kindly include the number of children, their ages, and any food allergies or dietary restrictions in the RSVP form.",
+        ja: "お子様と一緒にご参列いただけることを楽しみにしております。お席やキッズミールをスムーズにご用意させていただくため、大変お手数ですが、RSVPフォームにて「お子様の人数」「ご年齢」「食物アレルギーの有無」をご記入いただけますと幸いです。",
+        my: "ကျွန်ုပ်တို့၏ မင်္ဂလာပွဲသို့ ကလေးငယ်များ ခေါ်ဆောင်လာမည်ဆိုပါက နေရာထိုင်ခင်းနှင့် အစားအသောက်များကို ကြိုတင်စီစဉ်နိုင်ရန် RSVP form တွင် ကလေးဦးရေ၊ အသက်အရွယ် နှင့် အစားအသောက် ဓာတ်မတည့်မှု ရှိ/မရှိ တို့ကို ဖြည့်စွက်ပေးပါရန် လေးစားစွာ မေတ္တာရပ်ခံအပ်ပါသည်။"
+      },
+      icon: 'baby'
     }
   ],
   "showGallery": true,

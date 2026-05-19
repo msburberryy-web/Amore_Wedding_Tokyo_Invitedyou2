@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Language, FaqItem, WeddingData } from '../types';
-import { ArrowLeft, Check, Loader2, Send, Info, CalendarPlus, Download } from 'lucide-react';
+import { ArrowLeft, Check, Loader2, Send, Info, CalendarPlus, Download, Baby } from 'lucide-react';
 
 interface Props {
   language: Language;
@@ -350,6 +350,17 @@ END:VCALENDAR`;
                            <div>
                              <p className="font-bold text-xs uppercase mb-1 text-gray-600">{getFaq('users')?.question[language]}</p>
                              <p className="text-xs leading-relaxed">{getFaq('users')?.answer[language]}</p>
+                           </div>
+                        </div>
+                    )}
+
+                    {/* Children Note */}
+                    {getFaq('baby') && (
+                        <div className="mt-3 text-sm text-gray-500 bg-white/50 p-3 rounded-lg border border-gray-100 flex gap-3 items-start">
+                           <Baby size={16} className="text-wedding-gold shrink-0 mt-0.5" />
+                           <div>
+                             <p className="font-bold text-xs uppercase mb-1 text-gray-600">{getFaq('baby')?.question[language]}</p>
+                             <p className="text-xs leading-relaxed">{getFaq('baby')?.answer[language]}</p>
                            </div>
                         </div>
                     )}
