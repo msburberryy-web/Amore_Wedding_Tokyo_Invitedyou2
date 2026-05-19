@@ -139,18 +139,19 @@ function isWebInvitationTask(page) {
 async function getTableData(pageId) {
   const blocksRes = await notionRequest(`/v1/blocks/${pageId}/children`);
   const tableBlock = (blocksRes.results || []).find(b => b.type === 'table');
-  if (!tableBlock) return { data: null, tableBlockId: null };
+  if (!tableBlock) return { data: null, tableBlockId: null, rowIds: {} };
 
   const rowsRes = await notionRequest(`/v1/blocks/${tableBlock.id}/children`);
   const data = {};
+  const rowIds = {};
   for (const row of (rowsRes.results || [])) {
     if (row.type !== 'table_row') continue;
     const cells = row.table_row.cells;
     const key = cells[0]?.map(c => c.plain_text).join('').trim();
     const val = cells[1]?.map(c => c.plain_text).join('').trim();
-    if (key) data[key] = val || '';
+    if (key) { data[key] = val || ''; rowIds[key] = row.id; }
   }
-  return { data, tableBlockId: tableBlock.id };
+  return { data, tableBlockId: tableBlock.id, rowIds };
 }
 
 // ─── GENERATE JSON ────────────────────────────────────────────────────────────
@@ -251,8 +252,19 @@ async function writeBackToNotionTable(tableBlockId, key, value) {
   });
 }
 
+async function updateNotionTableRow(rowBlockId, key, value) {
+  await notionRequest(`/v1/blocks/${rowBlockId}`, 'PATCH', {
+    table_row: {
+      cells: [
+        [{ type: 'text', text: { content: key } }],
+        [{ type: 'text', text: { content: value } }]
+      ]
+    }
+  });
+}
+
 // ─── RUN WRITE-BACK ───────────────────────────────────────────────────────────
-async function runWriteBack(tableData, tableBlockId, data) {
+async function runWriteBack(tableData, tableBlockId, data, rowIds = {}) {
   if (!tableBlockId) return;
   const candidates = [
     ['groom_en',          data.groomName?.en || ''],
@@ -281,9 +293,13 @@ async function runWriteBack(tableData, tableBlockId, data) {
     ['visuals',           data.visuals ? JSON.stringify(data.visuals) : ''],
   ];
   for (const [key, value] of candidates) {
-    if (!tableData[key] && value) {
+    if (!value) continue;
+    if (!tableData.hasOwnProperty(key)) {
       await writeBackToNotionTable(tableBlockId, key, value);
-      console.log(`  Write-back: ${key} → Notion`);
+      console.log(`  Write-back (new): ${key} → Notion`);
+    } else if (tableData[key] !== value) {
+      await updateNotionTableRow(rowIds[key], key, value);
+      console.log(`  Write-back (update): ${key} → Notion`);
     }
   }
 }
@@ -369,7 +385,7 @@ async function writeBackTask(task, publicDir, defaultData) {
   const titleProp = Object.values(task.properties).find(p => p.type === 'title');
   const title = titleProp?.title?.map(t => t.plain_text).join('') || '(untitled)';
 
-  const { data: tableData, tableBlockId } = await getTableData(task.id);
+  const { data: tableData, tableBlockId, rowIds } = await getTableData(task.id);
   if (!tableData?.groom_en || !tableData?.bride_en || !tableBlockId) return;
 
   const slug = s => s.toLowerCase().trim().split(/\s+/)[0];
@@ -379,7 +395,7 @@ async function writeBackTask(task, publicDir, defaultData) {
 
   const existing = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
   const data = buildWeddingData(tableData, defaultData, existing);
-  await runWriteBack(tableData, tableBlockId, data);
+  await runWriteBack(tableData, tableBlockId, data, rowIds);
   console.log(`  Write-back complete for "${title}"`);
 }
 

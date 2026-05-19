@@ -10,8 +10,8 @@
     "my": "MEME"
   },
   "date": "2026-05-03T10:30:00",
-  "start_time":"10:30",
-  "end_time":"13:00",
+  "start_time": "10:30",
+  "end_time": "13:00",
   "showCountdown": true,
   "rsvpDeadline": "2026-03-20",
   "location": {
@@ -25,8 +25,8 @@
       "ja": "〒107-0052 東京都港区赤坂2-14-5 Daiwa赤坂ビル",
       "my": "〒107-0052 Daiwa Akasaka Building, 2-14-5 Akasaka, Minato-ku, Tokyo"
     },
-    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.188171022485!2d139.7378566!3d35.6723684!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188ba8ca2d0af5%3A0xf2758ef7523e5876!2z44Oe44Oq44O844Kw44Op44Oz6LWk5Z2C!5e0!3m2!1sja!2sjp!4v1766155742095!5m2!1sja!2sjp"
-    ,"parkingUrl": ""
+    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.188171022485!2d139.7378566!3d35.6723684!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188ba8ca2d0af5%3A0xf2758ef7523e5876!2z44Oe44Oq44O844Kw44Op44Oz6LWk5Z2C!5e0!3m2!1sja!2sjp!4v1766155742095!5m2!1sja!2sjp",
+    "parkingUrl": ""
   },
   "message": {
     "en": "We invite you to share in our joy as we exchange marriage vows.",
@@ -179,6 +179,19 @@
         "my": "{{deadline}} နောက်ဆုံးထား၍ အကြောင်းပြန်ပေးပါ။"
       },
       "icon": "calendar"
+    },
+    {
+      "question": {
+        "en": "Note for guests with children",
+        "ja": "お子様連れでご参列の皆様へ",
+        "my": "ကလေးငယ်များဖြင့် တက်ရောက်မည့် ဧည့်သည်များအတွက် မှတ်ချက်"
+      },
+      "answer": {
+        "en": "We would love for your little ones to join us! To help us coordinate seating and special meal requirements, please kindly include the number of children, their ages, and any food allergies or dietary restrictions in the RSVP form.",
+        "ja": "お子様と一緒にご参列いただけることを楽しみにしております。お席やキッズミールをスムーズにご用意させていただくため、大変お手数ですが、RSVPフォームにて「お子様の人数」「ご年齢」「食物アレルギーの有無」をご記入いただけますと幸いです。",
+        "my": "ကျွန်ုပ်တို့၏ မင်္ဂလာပွဲသို့ ကလေးငယ်များ ခေါ်ဆောင်လာမည်ဆိုပါက နေရာထိုင်ခင်းနှင့် အစားအသောက်များကို ကြိုတင်စီစဉ်နိုင်ရန် RSVP form တွင် ကလေးဦးရေ၊ အသက်အရွယ် နှင့် အစားအသောက် ဓာတ်မတည့်မှု ရှိ/မရှိ တို့ကို ဖြည့်စွက်ပေးပါရန် လေးစားစွာ မေတ္တာရပ်ခံအပ်ပါသည်။"
+      },
+      "icon": "baby"
     }
   ],
   "showGallery": true,

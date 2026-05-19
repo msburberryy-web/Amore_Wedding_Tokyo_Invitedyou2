@@ -23,8 +23,8 @@
       "ja": "〒160-0021 東京都新宿区歌舞伎町2-4-10 KDX東新宿ビル1F",
       "my": "1F KDX Higashi-Shinjuku Building, 2-4-10 Kabukicho, Shinjuku-ku, Tokyo 160-0021"
     },
-    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.161296291768!2d139.70624809999998!3d35.697648199999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188cd8b5b7ac67%3A0x9ce2f5afc23c6d3a!2sWedding%26Party%20BATUR%20Tokyo!5e0!3m2!1sen!2sjp!4v1766542348811!5m2!1sen!2sjp"
-    ,"parkingUrl": "https://www.andativa-batur.com/tokyo/party/enkai/access.html"
+    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.161296291768!2d139.70624809999998!3d35.697648199999996!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188cd8b5b7ac67%3A0x9ce2f5afc23c6d3a!2sWedding%26Party%20BATUR%20Tokyo!5e0!3m2!1sen!2sjp!4v1766542348811!5m2!1sen!2sjp",
+    "parkingUrl": "https://www.andativa-batur.com/tokyo/party/enkai/access.html"
   },
   "message": {
     "en": "We invite you to share in our joy as we exchange marriage vows.",
@@ -34,7 +34,7 @@
   "googleFormUrl": "",
   "googleScriptUrl": "https://script.google.com/macros/s/AKfycbzipGpYU8aL71ybcBBcjaYW3g-H_PSXyt9RWiaBv_zM2C9voYwzk0EwN8FCTB0utW61/exec",
   "showSchedule": true,
-    "schedule": [
+  "schedule": [
     {
       "time": "18:00",
       "title": {
@@ -132,6 +132,19 @@
         "my": "{{deadline}} နောက်ဆုံးထား၍ အကြောင်းပြန်ပေးပါ။"
       },
       "icon": "calendar"
+    },
+    {
+      "question": {
+        "en": "Note for guests with children",
+        "ja": "お子様連れでご参列の皆様へ",
+        "my": "ကလေးငယ်များဖြင့် တက်ရောက်မည့် ဧည့်သည်များအတွက် မှတ်ချက်"
+      },
+      "answer": {
+        "en": "We would love for your little ones to join us! To help us coordinate seating and special meal requirements, please kindly include the number of children, their ages, and any food allergies or dietary restrictions in the RSVP form.",
+        "ja": "お子様と一緒にご参列いただけることを楽しみにしております。お席やキッズミールをスムーズにご用意させていただくため、大変お手数ですが、RSVPフォームにて「お子様の人数」「ご年齢」「食物アレルギーの有無」をご記入いただけますと幸いです。",
+        "my": "ကျွန်ုပ်တို့၏ မင်္ဂလာပွဲသို့ ကလေးငယ်များ ခေါ်ဆောင်လာမည်ဆိုပါက နေရာထိုင်ခင်းနှင့် အစားအသောက်များကို ကြိုတင်စီစဉ်နိုင်ရန် RSVP form တွင် ကလေးဦးရေ၊ အသက်အရွယ် နှင့် အစားအသောက် ဓာတ်မတည့်မှု ရှိ/မရှိ တို့ကို ဖြည့်စွက်ပေးပါရန် လေးစားစွာ မေတ္တာရပ်ခံအပ်ပါသည်။"
+      },
+      "icon": "baby"
     }
   ],
   "showGallery": true,
