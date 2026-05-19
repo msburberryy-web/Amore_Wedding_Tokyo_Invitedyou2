@@ -122,10 +122,6 @@ async function queryTasksByStatus(status) {
   return result.results || [];
 }
 
-async function queryAllTasks() {
-  const result = await notionRequest(`/v1/databases/${DB_ID}/query`, 'POST', {});
-  return result.results || [];
-}
 
 // ─── IDENTIFY ─────────────────────────────────────────────────────────────────
 function isWebInvitationTask(page) {
@@ -339,15 +335,13 @@ async function processTask(task, publicDir, defaultData, fullProcess) {
     ? `${SITE_BASE_URL}/scripts/${folder}_rsvp_script.js`
     : '';
 
-  // Always build merged data (needed for write-back in all cases)
-  const jsonPath = path.join(publicDir, `wedding-data_${folder}.json`);
-  const existing = fs.existsSync(jsonPath) ? JSON.parse(fs.readFileSync(jsonPath, 'utf8')) : null;
-  const data = buildWeddingData(tableData, defaultData, existing);
-
   if (fullProcess) {
+    const jsonPath  = path.join(publicDir, `wedding-data_${folder}.json`);
     const photoDir  = path.join(publicDir, 'photos', folder);
     const scriptDir = path.join(publicDir, 'scripts');
 
+    const existing = fs.existsSync(jsonPath) ? JSON.parse(fs.readFileSync(jsonPath, 'utf8')) : null;
+    const data = buildWeddingData(tableData, defaultData, existing);
     fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2), 'utf8');
     console.log(`  Written: public/wedding-data_${folder}.json`);
 
@@ -364,9 +358,6 @@ async function processTask(task, publicDir, defaultData, fullProcess) {
       console.log(`  Written: public/scripts/${folder}_rsvp_script.js`);
     }
   }
-
-  // Write back to Notion for ALL cases (Ready, Done, and any other status)
-  await runWriteBack(tableData, tableBlockId, data);
 
   await markDone(task.id, invitationUrl, uploadUrl, uploadCode, scriptUrl);
   console.log(`  Notion: note updated | Upload Code: ${uploadCode || '(no secret set)'}`);
@@ -397,45 +388,36 @@ async function main() {
   const publicDir   = path.join(repoRoot, 'public');
   const defaultData = JSON.parse(fs.readFileSync(path.join(publicDir, 'wedding-data.json'), 'utf8'));
 
-  console.log('Querying Notion for Ready and Done tasks...');
-  const [readyTasks, doneTasks] = await Promise.all([
+  console.log('Querying Notion for Ready, Done, and Sync Now tasks...');
+  const [readyTasks, doneTasks, syncNowTasks] = await Promise.all([
     queryTasksByStatus('Ready'),
-    queryTasksByStatus('Done')
+    queryTasksByStatus('Done'),
+    queryTasksByStatus('Sync Now'),
   ]);
-  console.log(`Found ${readyTasks.length} Ready, ${doneTasks.length} Done task(s).`);
+  console.log(`Found ${readyTasks.length} Ready, ${doneTasks.length} Done, ${syncNowTasks.length} Sync Now task(s).`);
 
-  const processedIds = new Set();
   let processed = 0;
 
   for (const task of readyTasks) {
     if (!isWebInvitationTask(task)) continue;
-    if (await processTask(task, publicDir, defaultData, true)) {
-      processedIds.add(task.id);
-      processed++;
-    }
+    if (await processTask(task, publicDir, defaultData, true)) processed++;
   }
 
   for (const task of doneTasks) {
     if (!isWebInvitationTask(task)) continue;
     await processTask(task, publicDir, defaultData, false);
-    processedIds.add(task.id);
   }
 
-  // Write back JSON → Notion for any remaining couples not covered above.
-  // Count existing couple JSON files — if all are already covered by Ready/Done,
-  // skip the expensive queryAllTasks() call entirely.
-  const coupleJsonCount = fs.readdirSync(publicDir)
-    .filter(f => /^wedding-data_.+\.json$/.test(f) && f !== 'wedding-data.json').length;
-
-  if (processedIds.size < coupleJsonCount) {
-    console.log('\nSome couples may have other statuses — syncing JSON → Notion...');
-    const allTasks = await queryAllTasks();
-    for (const task of allTasks) {
-      if (processedIds.has(task.id) || !isWebInvitationTask(task)) continue;
-      await writeBackTask(task, publicDir, defaultData);
-    }
-  } else {
-    console.log('\nAll known couples covered by Ready/Done pass — skipping full scan.');
+  // "Sync Now" — write GitHub JSON back to Notion table, then mark Done
+  for (const task of syncNowTasks) {
+    if (!isWebInvitationTask(task)) continue;
+    await writeBackTask(task, publicDir, defaultData);
+    const titleProp = Object.values(task.properties).find(p => p.type === 'title');
+    const title = titleProp?.title?.map(t => t.plain_text).join('') || '(untitled)';
+    await notionRequest(`/v1/pages/${task.id}`, 'PATCH', {
+      properties: { Status: { select: { name: 'Done' } } }
+    });
+    console.log(`  "${title}" → status reset to Done`);
   }
 
   console.log(`\nDone — ${processed} new couple(s) processed.`);
