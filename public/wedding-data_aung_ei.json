@@ -31,7 +31,7 @@
     "my": "ကျွန်ုပ်တို့၏ မင်္ဂလာပွဲသို့ ကြွရောက်ချီးမြှင့်ပါရန် ဖိတ်ကြားအပ်ပါသည်။"
   },
   "googleFormUrl": "",
-  "googleScriptUrl": "Create a sheet on google sheet —> create app script —> add and deploy —> copy deploy url and paste it",
+  "googleScriptUrl": "https://script.google.com/macros/s/AKfycbyqvDHyMjaAKcOYTX7qb5owBnc9Ydk5IVHoE_dTeo1zXR7mbYXebvhmgaid-32Z-uolfQ/exec",
   "showSchedule": true,
   "schedule": [
     {
