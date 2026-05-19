@@ -150,7 +150,6 @@
   "showGallery": true,
   "gallery": [
     "./photos/[event-folder]/gallery1.JPG",
-    "./photos/[event-folder]/cover.jpeg",
     "./photos/[event-folder]/gallery2.JPG",
     "./photos/[event-folder]/gallery3.JPG",
     "./photos/[event-folder]/gallery4.JPG",

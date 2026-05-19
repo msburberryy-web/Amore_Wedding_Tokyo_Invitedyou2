@@ -148,13 +148,7 @@
   ],
   "showGallery": true,
   "gallery": [
-    "./photos/[event-folder]/gallery1.jpeg",
-    "./photos/[event-folder]/cover.jpeg",
-    "./photos/[event-folder]/gallery2.jpeg",
-    "./photos/[event-folder]/gallery3.JPG",
-    "./photos/[event-folder]/gallery4.jpeg",
-    "./photos/[event-folder]/gallery5.jpeg",
-    "./photos/[event-folder]/gallery6.jpeg"
+    "./photos/[event-folder]/gallery3.JPG"
   ],
   "musicUrl": "",
   "images": {
