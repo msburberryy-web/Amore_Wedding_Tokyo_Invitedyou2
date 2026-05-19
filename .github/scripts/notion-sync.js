@@ -122,6 +122,7 @@ async function queryTasksByStatus(status) {
   return result.results || [];
 }
 
+
 // ─── IDENTIFY ─────────────────────────────────────────────────────────────────
 function isWebInvitationTask(page) {
   // Primary: "Wedding Action Items" relation contains "Web invitation preparation"
@@ -250,6 +251,43 @@ async function writeBackToNotionTable(tableBlockId, key, value) {
   });
 }
 
+// ─── RUN WRITE-BACK ───────────────────────────────────────────────────────────
+async function runWriteBack(tableData, tableBlockId, data) {
+  if (!tableBlockId) return;
+  const candidates = [
+    ['groom_en',          data.groomName?.en || ''],
+    ['groom_ja',          data.groomName?.ja || ''],
+    ['groom_my',          data.groomName?.my || ''],
+    ['bride_en',          data.brideName?.en || ''],
+    ['bride_ja',          data.brideName?.ja || ''],
+    ['bride_my',          data.brideName?.my || ''],
+    ['date',              data.date || ''],
+    ['rsvp_deadline',     data.rsvpDeadline || ''],
+    ['venue_name_en',     data.location?.name?.en || ''],
+    ['venue_name_ja',     data.location?.name?.ja || ''],
+    ['venue_name_my',     data.location?.name?.my || ''],
+    ['venue_address_en',  data.location?.address?.en || ''],
+    ['venue_address_ja',  data.location?.address?.ja || ''],
+    ['venue_address_my',  data.location?.address?.my || ''],
+    ['map_url',           data.location?.mapUrl || ''],
+    ['parking_url',       data.location?.parkingUrl || ''],
+    ['uketsuke_time',     data.schedule?.find(s => s.icon === 'reception')?.time || ''],
+    ['party_time',        data.schedule?.find(s => s.icon === 'party')?.time     || ''],
+    ['google_script_url', data.googleScriptUrl || ''],
+    ['music_url',         data.musicUrl || ''],
+    ['message',           data.message ? JSON.stringify(data.message) : ''],
+    ['theme',             data.theme   ? JSON.stringify(data.theme)   : ''],
+    ['fonts',             data.fonts   ? JSON.stringify(data.fonts)   : ''],
+    ['visuals',           data.visuals ? JSON.stringify(data.visuals) : ''],
+  ];
+  for (const [key, value] of candidates) {
+    if (!tableData[key] && value) {
+      await writeBackToNotionTable(tableBlockId, key, value);
+      console.log(`  Write-back: ${key} → Notion`);
+    }
+  }
+}
+
 // ─── UPDATE NOTION ────────────────────────────────────────────────────────────
 async function markDone(pageId, invitationUrl, uploadUrl, uploadCode, scriptUrl) {
   const properties = {
@@ -307,42 +345,6 @@ async function processTask(task, publicDir, defaultData, fullProcess) {
     fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2), 'utf8');
     console.log(`  Written: public/wedding-data_${folder}.json`);
 
-    // Write back to Notion any values present in GitHub JSON but absent from Notion table
-    if (tableBlockId) {
-      const writeBackCandidates = [
-        ['groom_en',          data.groomName.en],
-        ['groom_ja',          data.groomName.ja],
-        ['groom_my',          data.groomName.my],
-        ['bride_en',          data.brideName.en],
-        ['bride_ja',          data.brideName.ja],
-        ['bride_my',          data.brideName.my],
-        ['date',              data.date],
-        ['rsvp_deadline',     data.rsvpDeadline],
-        ['venue_name_en',     data.location.name.en],
-        ['venue_name_ja',     data.location.name.ja],
-        ['venue_name_my',     data.location.name.my],
-        ['venue_address_en',  data.location.address.en],
-        ['venue_address_ja',  data.location.address.ja],
-        ['venue_address_my',  data.location.address.my],
-        ['map_url',           data.location.mapUrl],
-        ['parking_url',       data.location.parkingUrl || ''],
-        ['uketsuke_time',     data.schedule?.find(s => s.icon === 'reception')?.time || ''],
-        ['party_time',        data.schedule?.find(s => s.icon === 'party')?.time     || ''],
-        ['google_script_url', data.googleScriptUrl],
-        ['music_url',         data.musicUrl],
-        ['message',           data.message ? JSON.stringify(data.message) : ''],
-        ['theme',             data.theme   ? JSON.stringify(data.theme)   : ''],
-        ['fonts',             data.fonts   ? JSON.stringify(data.fonts)   : ''],
-        ['visuals',           data.visuals ? JSON.stringify(data.visuals) : ''],
-      ];
-      for (const [key, value] of writeBackCandidates) {
-        if (!tableData[key] && value) {
-          await writeBackToNotionTable(tableBlockId, key, value);
-          console.log(`  Write-back: ${key} → Notion table`);
-        }
-      }
-    }
-
     if (!fs.existsSync(photoDir)) {
       fs.mkdirSync(photoDir, { recursive: true });
       fs.writeFileSync(path.join(photoDir, '.gitkeep'), '');
@@ -362,17 +364,37 @@ async function processTask(task, publicDir, defaultData, fullProcess) {
   return true;
 }
 
+// Write back JSON → Notion for tasks with any status (no status change)
+async function writeBackTask(task, publicDir, defaultData) {
+  const titleProp = Object.values(task.properties).find(p => p.type === 'title');
+  const title = titleProp?.title?.map(t => t.plain_text).join('') || '(untitled)';
+
+  const { data: tableData, tableBlockId } = await getTableData(task.id);
+  if (!tableData?.groom_en || !tableData?.bride_en || !tableBlockId) return;
+
+  const slug = s => s.toLowerCase().trim().split(/\s+/)[0];
+  const folder   = `${slug(tableData.groom_en)}_${slug(tableData.bride_en)}`;
+  const jsonPath = path.join(publicDir, `wedding-data_${folder}.json`);
+  if (!fs.existsSync(jsonPath)) return;
+
+  const existing = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+  const data = buildWeddingData(tableData, defaultData, existing);
+  await runWriteBack(tableData, tableBlockId, data);
+  console.log(`  Write-back complete for "${title}"`);
+}
+
 async function main() {
   const repoRoot    = path.resolve(__dirname, '../../');
   const publicDir   = path.join(repoRoot, 'public');
   const defaultData = JSON.parse(fs.readFileSync(path.join(publicDir, 'wedding-data.json'), 'utf8'));
 
-  console.log('Querying Notion for Ready and Done tasks...');
-  const [readyTasks, doneTasks] = await Promise.all([
+  console.log('Querying Notion for Ready, Done, and Sync Now tasks...');
+  const [readyTasks, doneTasks, syncNowTasks] = await Promise.all([
     queryTasksByStatus('Ready'),
-    queryTasksByStatus('Done')
+    queryTasksByStatus('Done'),
+    queryTasksByStatus('Sync Now'),
   ]);
-  console.log(`Found ${readyTasks.length} Ready, ${doneTasks.length} Done task(s).`);
+  console.log(`Found ${readyTasks.length} Ready, ${doneTasks.length} Done, ${syncNowTasks.length} Sync Now task(s).`);
 
   let processed = 0;
 
@@ -381,10 +403,21 @@ async function main() {
     if (await processTask(task, publicDir, defaultData, true)) processed++;
   }
 
-  // Refresh notes on Done tasks so upload code stays in sync with UPLOAD_SECRET
   for (const task of doneTasks) {
     if (!isWebInvitationTask(task)) continue;
     await processTask(task, publicDir, defaultData, false);
+  }
+
+  // "Sync Now" — write GitHub JSON back to Notion table, then mark Done
+  for (const task of syncNowTasks) {
+    if (!isWebInvitationTask(task)) continue;
+    await writeBackTask(task, publicDir, defaultData);
+    const titleProp = Object.values(task.properties).find(p => p.type === 'title');
+    const title = titleProp?.title?.map(t => t.plain_text).join('') || '(untitled)';
+    await notionRequest(`/v1/pages/${task.id}`, 'PATCH', {
+      properties: { Status: { select: { name: 'Done' } } }
+    });
+    console.log(`  "${title}" → status reset to Done`);
   }
 
   console.log(`\nDone — ${processed} new couple(s) processed.`);
