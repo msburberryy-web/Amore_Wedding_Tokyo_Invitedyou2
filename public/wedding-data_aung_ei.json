@@ -23,7 +23,7 @@
       "ja": "〒160-0021 東京都新宿区歌舞伎町２丁目４−10 Kdx Higashi Shinjuku, １Ｆ",
       "my": "〒160-0021 Tokyo, Shinjuku City, Kabukicho, 2 Chome−4−10 Kdx Higashi Shinjuku, １Ｆ"
     },
-    "mapUrl": "https://www.google.com/maps/place/Wedding%26Party+BATUR+Tokyo/@35.6976482,139.7062481,883m/data=!3m2!1e3!4b1!4m6!3m5!1s0x60188cd8b5b7ac67:0x9ce2f5afc23c6d3a!8m2!3d35.6976482!4d139.7062481!16s%2Fg%2F1td9drlq?entry=ttu&g_ep=EgoyMDI2MDUxMC4wIKXMDSoASAFQAw%3D%3D"
+    "mapUrl": "https://maps.google.com/maps?q=35.6976482,139.7062481&z=17&output=embed"
   },
   "message": {
     "en": "We invite you to share in our joy as we exchange marriage vows.",
@@ -31,11 +31,11 @@
     "my": "ကျွန်ုပ်တို့၏ မင်္ဂလာပွဲသို့ ကြွရောက်ချီးမြှင့်ပါရန် ဖိတ်ကြားအပ်ပါသည်။"
   },
   "googleFormUrl": "",
-  "googleScriptUrl": "https://script.google.com/macros/s/AKfycbyqvDHyMjaAKcOYTX7qb5owBnc9Ydk5IVHoE_dTeo1zXR7mbYXebvhmgaid-32Z-uolfQ/exec",
+  "googleScriptUrl": "Create a sheet on google sheet —> create app script —> add and deploy —> copy deploy url and paste it",
   "showSchedule": true,
   "schedule": [
     {
-      "time": "11:30",
+      "time": "11:00",
       "title": {
         "en": "Reception",
         "ja": "受付開始",
