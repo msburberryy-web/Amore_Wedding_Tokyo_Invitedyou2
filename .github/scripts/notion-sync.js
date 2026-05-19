@@ -264,33 +264,36 @@ async function updateNotionTableRow(rowBlockId, key, value) {
 }
 
 // ─── RUN WRITE-BACK ───────────────────────────────────────────────────────────
-async function runWriteBack(tableData, tableBlockId, data, rowIds = {}) {
+// `existing` is the raw JSON from disk — the source of truth for write-back.
+// We never use the Notion-merged `buildWeddingData` result here because that
+// function lets Notion win, which would make the comparison always equal.
+async function runWriteBack(tableData, tableBlockId, existing, rowIds = {}) {
   if (!tableBlockId) return;
   const candidates = [
-    ['groom_en',          data.groomName?.en || ''],
-    ['groom_ja',          data.groomName?.ja || ''],
-    ['groom_my',          data.groomName?.my || ''],
-    ['bride_en',          data.brideName?.en || ''],
-    ['bride_ja',          data.brideName?.ja || ''],
-    ['bride_my',          data.brideName?.my || ''],
-    ['date',              data.date || ''],
-    ['rsvp_deadline',     data.rsvpDeadline || ''],
-    ['venue_name_en',     data.location?.name?.en || ''],
-    ['venue_name_ja',     data.location?.name?.ja || ''],
-    ['venue_name_my',     data.location?.name?.my || ''],
-    ['venue_address_en',  data.location?.address?.en || ''],
-    ['venue_address_ja',  data.location?.address?.ja || ''],
-    ['venue_address_my',  data.location?.address?.my || ''],
-    ['map_url',           data.location?.mapUrl || ''],
-    ['parking_url',       data.location?.parkingUrl || ''],
-    ['uketsuke_time',     data.schedule?.find(s => s.icon === 'reception')?.time || ''],
-    ['party_time',        data.schedule?.find(s => s.icon === 'party')?.time     || ''],
-    ['google_script_url', data.googleScriptUrl || ''],
-    ['music_url',         data.musicUrl || ''],
-    ['message',           data.message ? JSON.stringify(data.message) : ''],
-    ['theme',             data.theme   ? JSON.stringify(data.theme)   : ''],
-    ['fonts',             data.fonts   ? JSON.stringify(data.fonts)   : ''],
-    ['visuals',           data.visuals ? JSON.stringify(data.visuals) : ''],
+    ['groom_en',          existing.groomName?.en || ''],
+    ['groom_ja',          existing.groomName?.ja || ''],
+    ['groom_my',          existing.groomName?.my || ''],
+    ['bride_en',          existing.brideName?.en || ''],
+    ['bride_ja',          existing.brideName?.ja || ''],
+    ['bride_my',          existing.brideName?.my || ''],
+    ['date',              existing.date || ''],
+    ['rsvp_deadline',     existing.rsvpDeadline || ''],
+    ['venue_name_en',     existing.location?.name?.en || ''],
+    ['venue_name_ja',     existing.location?.name?.ja || ''],
+    ['venue_name_my',     existing.location?.name?.my || ''],
+    ['venue_address_en',  existing.location?.address?.en || ''],
+    ['venue_address_ja',  existing.location?.address?.ja || ''],
+    ['venue_address_my',  existing.location?.address?.my || ''],
+    ['map_url',           existing.location?.mapUrl || ''],
+    ['parking_url',       existing.location?.parkingUrl || ''],
+    ['uketsuke_time',     existing.schedule?.find(s => s.icon === 'reception')?.time || ''],
+    ['party_time',        existing.schedule?.find(s => s.icon === 'party')?.time     || ''],
+    ['google_script_url', existing.googleScriptUrl || ''],
+    ['music_url',         existing.musicUrl || ''],
+    ['message',           existing.message ? JSON.stringify(existing.message) : ''],
+    ['theme',             existing.theme   ? JSON.stringify(existing.theme)   : ''],
+    ['fonts',             existing.fonts   ? JSON.stringify(existing.fonts)   : ''],
+    ['visuals',           existing.visuals ? JSON.stringify(existing.visuals) : ''],
   ];
   for (const [key, value] of candidates) {
     if (!value) continue;
@@ -394,8 +397,7 @@ async function writeBackTask(task, publicDir, defaultData) {
   if (!fs.existsSync(jsonPath)) return;
 
   const existing = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-  const data = buildWeddingData(tableData, defaultData, existing);
-  await runWriteBack(tableData, tableBlockId, data, rowIds);
+  await runWriteBack(tableData, tableBlockId, existing, rowIds);
   console.log(`  Write-back complete for "${title}"`);
 }
 
