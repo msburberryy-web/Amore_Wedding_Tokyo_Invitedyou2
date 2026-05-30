@@ -35,7 +35,7 @@
   "showSchedule": true,
   "schedule": [
     {
-      "time": "10:30",
+      "time": "17:00",
       "title": {
         "en": "Reception",
         "ja": "受付開始",
@@ -44,7 +44,7 @@
       "icon": "reception"
     },
     {
-      "time": "11:00",
+      "time": "17:30",
       "title": {
         "en": "Banquet Begins",
         "ja": "開宴",
