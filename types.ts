@@ -10,7 +10,7 @@ export interface LocalizedString {
 export interface ScheduleItem {
   time: string;
   title: LocalizedString;
-  icon: 'ceremony' | 'reception' | 'party' | 'toast' | 'meal' | 'camera';
+  icon: 'ceremony' | 'reception' | 'party' | 'toast' | 'meal' | 'camera' | 'end';
 }
 
 export interface FaqItem {
