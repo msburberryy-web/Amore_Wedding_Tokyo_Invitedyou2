@@ -177,10 +177,11 @@ function buildWeddingData(t, defaultData, existing = null) {
   const parkingUrl = t.parking_url || existing?.location?.parkingUrl || '';
   if (parkingUrl) location.parkingUrl = parkingUrl;
 
-  // Build schedule from uketsuke_time + party_time if provided, else use default
-  const uketsukeTime = t.uketsuke_time || existing?.schedule?.find(s => s.icon === 'reception')?.time || '';
-  const partyTime    = t.party_time    || existing?.schedule?.find(s => s.icon === 'party')?.time    || '';
-  const schedule = (uketsukeTime || partyTime)
+  // Build schedule from uketsuke_time + party_time + party_end_time if provided, else use default
+  const uketsukeTime  = t.uketsuke_time  || existing?.schedule?.find(s => s.icon === 'reception')?.time || '';
+  const partyTime     = t.party_time     || existing?.schedule?.find(s => s.icon === 'party')?.time    || '';
+  const partyEndTime  = t.party_end_time || existing?.schedule?.find(s => s.icon === 'end')?.time      || '';
+  const schedule = (uketsukeTime || partyTime || partyEndTime)
     ? [
         uketsukeTime && {
           time: uketsukeTime,
@@ -191,6 +192,11 @@ function buildWeddingData(t, defaultData, existing = null) {
           time: partyTime,
           title: { en: 'Banquet Begins', ja: '開宴', my: 'မင်္ဂလာဧည့်ခံပွဲ စတင်ခြင်း' },
           icon: 'party'
+        },
+        partyEndTime && {
+          time: partyEndTime,
+          title: { en: 'Conclusion & Send-off', ja: 'お披楽喜・送賓', my: 'ဧည့်ခံပွဲ ပြီးဆုံးခြင်း' },
+          icon: 'end'
         }
       ].filter(Boolean)
     : defaultData.schedule;
@@ -288,6 +294,7 @@ async function runWriteBack(tableData, tableBlockId, existing, rowIds = {}) {
     ['parking_url',       existing.location?.parkingUrl || ''],
     ['uketsuke_time',     existing.schedule?.find(s => s.icon === 'reception')?.time || ''],
     ['party_time',        existing.schedule?.find(s => s.icon === 'party')?.time     || ''],
+    ['party_end_time',    existing.schedule?.find(s => s.icon === 'end')?.time       || ''],
     ['google_script_url', existing.googleScriptUrl || ''],
     ['music_url',         existing.musicUrl || ''],
     ['message',           existing.message ? JSON.stringify(existing.message) : ''],
