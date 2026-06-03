@@ -14,14 +14,14 @@
   "rsvpDeadline": "2026-05-24",
   "location": {
     "name": {
-      "en": "ホテルベルクラシック東京 6F コンコード",
+      "en": "Hotel Bell Classic Tokyo 6F Concord",
       "ja": "ホテルベルクラシック東京 6F コンコード",
-      "my": "ホテルベルクラシック東京 6F コンコード"
+      "my": "Hotel Bell Classic Tokyo 6F Concord"
     },
     "address": {
-      "en": "〒170-0005 東京都豊島区南大塚3-33-6",
-      "ja": "〒170-0005 東京都豊島区南大塚3-33-6",
-      "my": "〒170-0005 東京都豊島区南大塚3-33-6"
+      "en": "3 Chome-33-6 Minamiotsuka, Toshima City, Tokyo 170-0005",
+      "ja": "〒170-0005 東京都豊島区��大塚3-33-6",
+      "my": "3 Chome-33-6 Minamiotsuka, Toshima City, Tokyo 170-0005"
     },
     "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6477.5543680557375!2d139.7273181!3d35.731698!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188d76cf0a7c03%3A0xc7205bd3fe304291!2z44Ob44OG44Or44OZ44Or44Kv44Op44K344OD44Kv5p2x5Lqs!5e0!3m2!1sja!2sjp!4v1776349552910!5m2!1sja!2sjp"
   },
@@ -46,11 +46,20 @@
     {
       "time": "17:00",
       "title": {
-        "en": "Grand Entrance",
-        "ja": "開宴・新郎新婦入場",
+        "en": "Banquet Begins",
+        "ja": "開宴",
         "my": "မင်္ဂလာဧည့်ခံပွဲ စတင်ခြင်း"
       },
       "icon": "party"
+    },
+    {
+      "time": "hh:mm",
+      "title": {
+        "en": "Conclusion & Send-off",
+        "ja": "お披楽喜・送賓",
+        "my": "ဧည့်ခံပွဲ ပြီးဆုံးခြင်း"
+      },
+      "icon": "end"
     }
   ],
   "faq": [
@@ -148,13 +157,13 @@
   ],
   "showGallery": true,
   "gallery": [
-    "./photos/[event-folder]/gallery3.JPG"
+    "./photos/[event-folder]/gallery1.jpg"
   ],
   "musicUrl": "",
   "images": {
-    "hero": "./photos/[event-folder]/cover.jpeg",
-    "groom": "./photos/[event-folder]/groom.jpeg",
-    "bride": "./photos/[event-folder]/bride.jpeg"
+    "hero": "./photos/[event-folder]/cover.jpg",
+    "groom": "./photos/[event-folder]/groom.jpg",
+    "bride": "./photos/[event-folder]/bride.jpg"
   },
   "theme": {
     "primary": "#6B8E9B",
