@@ -32,6 +32,8 @@ const TRANSLATIONS = {
     gallery: "Gallery",
     rsvp: "RSVP",
     rsvpNote: "Please respond by filling out the form below.",
+    rsvpClosed: "RSVP is now closed.",
+    rsvpClosedNote: "The RSVP deadline has passed. Thank you to everyone who responded.",
     presentedBy: "Presented by Amoré Wedding Tokyo",
     addToCal: "Add to Calendar",
     googleCal: "Google Calendar",
@@ -49,6 +51,8 @@ const TRANSLATIONS = {
     gallery: "写真",
     rsvp: "出欠",
     rsvpNote: "以下のフォームよりご回答をお願いいたします。",
+    rsvpClosed: "受付は終了しました。",
+    rsvpClosedNote: "返信期限が過ぎました。ご回答いただいた皆様、ありがとうございました。",
     presentedBy: "Presented by Amoré Wedding Tokyo",
     addToCal: "カレンダーに追加",
     googleCal: "Googleカレンダー",
@@ -66,6 +70,8 @@ const TRANSLATIONS = {
     gallery: "အမှတ်တရများ",
     rsvp: "အကြောင်းပြန်ရန်",
     rsvpNote: "ကျေးဇူးပြု၍ အောက်ပါပုံစံကိုဖြည့်ပါ",
+    rsvpClosed: "RSVP ပိတ်သွားပြီဖြစ်ပါသည်။",
+    rsvpClosedNote: "RSVP နောက်ဆုံးရက် ကျော်လွန်သွားပါပြီ။ အကြောင်းပြန်ပေးသူများအားလုံးကို ကျေးဇူးတင်ပါသည်။",
     presentedBy: "Amoré Wedding Tokyo မှ တင်ဆက်သည်",
     addToCal: "ပြက္ခဒိန်တွင်မှတ်သားရန်",
     googleCal: "Google Calendar",
@@ -432,6 +438,14 @@ const App: React.FC = () => {
     }, {} as Record<Language, string>)
   }));
   
+  const isRsvpClosed = (() => {
+    if (!data.rsvpDeadline) return false;
+    const deadline = new Date(data.rsvpDeadline);
+    if (isNaN(deadline.getTime())) return false;
+    deadline.setHours(23, 59, 59, 999);
+    return new Date() > deadline;
+  })();
+
   const activeFont = data.fonts?.[lang] || DEFAULT_DATA.fonts[lang];
   const theme = data.theme || DEFAULT_DATA.theme;
   const styleVars = {
@@ -506,7 +520,7 @@ const App: React.FC = () => {
         </Suspense>
       )}
 
-      {view === 'rsvp' ? (
+      {view === 'rsvp' && !isRsvpClosed ? (
         <RsvpForm language={lang} googleScriptUrl={data.googleScriptUrl} faq={processedFaq} weddingData={data} onBack={() => setView('invitation')} />
       ) : (
         <>
@@ -670,10 +684,19 @@ const App: React.FC = () => {
              )}
 
             <section className="text-center py-20 px-6">
-                 <div className="border border-wedding-gold p-1 inline-block rounded-full">
-                    <button onClick={() => setView('rsvp')} className="w-full md:w-auto px-16 py-4 bg-wedding-gold text-white font-serif text-xl tracking-widest uppercase hover:bg-wedding-text transition-colors rounded-full shadow-lg">{t.rsvp}</button>
+              {isRsvpClosed ? (
+                <div className="inline-block px-10 py-6 border border-gray-200 rounded-2xl bg-gray-50">
+                  <p className="font-serif text-xl text-gray-400">{t.rsvpClosed}</p>
+                  <p className="mt-3 text-gray-400 font-light text-sm">{t.rsvpClosedNote}</p>
                 </div>
-                 <p className="mt-6 text-gray-400 font-light text-sm">{t.rsvpNote}</p>
+              ) : (
+                <>
+                  <div className="border border-wedding-gold p-1 inline-block rounded-full">
+                    <button onClick={() => setView('rsvp')} className="w-full md:w-auto px-16 py-4 bg-wedding-gold text-white font-serif text-xl tracking-widest uppercase hover:bg-wedding-text transition-colors rounded-full shadow-lg">{t.rsvp}</button>
+                  </div>
+                  <p className="mt-6 text-gray-400 font-light text-sm">{t.rsvpNote}</p>
+                </>
+              )}
             </section>
           </main>
 
@@ -688,7 +711,10 @@ const App: React.FC = () => {
                <div className="flex justify-around items-center h-16">
                     <button onClick={() => scrollToSection(scheduleRef)} className="flex flex-col items-center justify-center w-full h-full text-gray-500 hover:text-wedding-gold"><Clock size={18} /><span className="text-[10px] mt-1">{t.schedule}</span></button>
                      <button onClick={() => scrollToSection(accessRef)} className="flex flex-col items-center justify-center w-full h-full text-gray-500 hover:text-wedding-gold"><MapPin size={18} /><span className="text-[10px] mt-1">{t.access}</span></button>
-                    <button onClick={() => setView('rsvp')} className="flex flex-col items-center justify-center w-full h-full bg-wedding-gold text-white"><span className="text-[10px] mt-1 font-bold">{t.rsvp}</span></button>
+                    {isRsvpClosed
+                      ? <div className="flex flex-col items-center justify-center w-full h-full bg-gray-200 text-gray-400"><span className="text-[10px] mt-1 font-bold">{t.rsvp}</span></div>
+                      : <button onClick={() => setView('rsvp')} className="flex flex-col items-center justify-center w-full h-full bg-wedding-gold text-white"><span className="text-[10px] mt-1 font-bold">{t.rsvp}</span></button>
+                    }
                      <button onClick={() => scrollToSection(galleryRef)} className="flex flex-col items-center justify-center w-full h-full text-gray-500 hover:text-wedding-gold"><Camera size={18} /><span className="text-[10px] mt-1">{t.gallery}</span></button>
                </div>
           </div>
