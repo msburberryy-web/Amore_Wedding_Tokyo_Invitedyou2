@@ -1,0 +1,40 @@
+name: Sync Photos from Drive
+
+on:
+  workflow_dispatch:
+    inputs:
+      folder_id:
+        description: 'Google Drive folder ID (from the shared link)'
+        required: true
+      event_folder:
+        description: 'Event folder name (e.g. khin_shwe)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Download photos from Drive
+        env:
+          GOOGLE_SA_KEY: ${{ secrets.GOOGLE_SA_KEY }}
+        run: node .github/scripts/sync-drive-photos.js "${{ inputs.folder_id }}" "${{ inputs.event_folder }}"
+
+      - name: Commit and push photos
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/photos/${{ inputs.event_folder }}/ public/wedding-data_${{ inputs.event_folder }}.json
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "chore: sync photos for ${{ inputs.event_folder }} from Drive"
+          git push
